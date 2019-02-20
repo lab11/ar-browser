@@ -8,22 +8,38 @@
 
 /* Begin PBXBuildFile section */
 		E99062C3221B551E00F0063F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99062C2221B551E00F0063F /* AppDelegate.swift */; };
-		E99062C5221B551E00F0063F /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = E99062C4221B551E00F0063F /* art.scnassets */; };
 		E99062C7221B551E00F0063F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99062C6221B551E00F0063F /* ViewController.swift */; };
 		E99062CA221B551E00F0063F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E99062C8221B551E00F0063F /* Main.storyboard */; };
 		E99062CC221B551F00F0063F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E99062CB221B551F00F0063F /* Assets.xcassets */; };
 		E99062CF221B551F00F0063F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E99062CD221B551F00F0063F /* LaunchScreen.storyboard */; };
+		E99062E6221C783F00F0063F /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = E99062E5221C783F00F0063F /* config.xml */; };
+		E99062E9221C794500F0063F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = E99062E8221C794500F0063F /* index.html */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E99062FE221C7F8700F0063F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E99062BF221B551E00F0063F /* arbrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = arbrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E99062C2221B551E00F0063F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E99062C4221B551E00F0063F /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		E99062C6221B551E00F0063F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E99062C9221B551E00F0063F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E99062CB221B551F00F0063F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E99062CE221B551F00F0063F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E99062D0221B551F00F0063F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E99062E0221C732E00F0063F /* arbrowser-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "arbrowser-Bridging-Header.h"; sourceTree = "<group>"; };
+		E99062E5221C783F00F0063F /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
+		E99062E8221C794500F0063F /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,14 +73,24 @@
 			isa = PBXGroup;
 			children = (
 				E99062C2221B551E00F0063F /* AppDelegate.swift */,
-				E99062C4221B551E00F0063F /* art.scnassets */,
 				E99062C6221B551E00F0063F /* ViewController.swift */,
+				E99062E5221C783F00F0063F /* config.xml */,
+				E99062E7221C794500F0063F /* www */,
 				E99062C8221B551E00F0063F /* Main.storyboard */,
 				E99062CB221B551F00F0063F /* Assets.xcassets */,
 				E99062CD221B551F00F0063F /* LaunchScreen.storyboard */,
 				E99062D0221B551F00F0063F /* Info.plist */,
+				E99062E0221C732E00F0063F /* arbrowser-Bridging-Header.h */,
 			);
 			path = arbrowser;
+			sourceTree = "<group>";
+		};
+		E99062E7221C794500F0063F /* www */ = {
+			isa = PBXGroup;
+			children = (
+				E99062E8221C794500F0063F /* index.html */,
+			);
+			path = www;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +103,7 @@
 				E99062BB221B551E00F0063F /* Sources */,
 				E99062BC221B551E00F0063F /* Frameworks */,
 				E99062BD221B551E00F0063F /* Resources */,
+				E99062FE221C7F8700F0063F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -99,6 +126,7 @@
 				TargetAttributes = {
 					E99062BE221B551E00F0063F = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
@@ -125,10 +153,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E99062C5221B551E00F0063F /* art.scnassets in Resources */,
+				E99062E9221C794500F0063F /* index.html in Resources */,
 				E99062CF221B551F00F0063F /* LaunchScreen.storyboard in Resources */,
 				E99062CC221B551F00F0063F /* Assets.xcassets in Resources */,
 				E99062CA221B551E00F0063F /* Main.storyboard in Resources */,
+				E99062E6221C783F00F0063F /* config.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,8 +315,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77RS4Q55EN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/arbrowser",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = arbrowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -295,6 +331,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.eecs.lab11.arbrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "arbrowser/arbrowser-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -304,8 +342,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77RS4Q55EN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/arbrowser",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = arbrowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -313,6 +358,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.eecs.lab11.arbrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "arbrowser/arbrowser-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
