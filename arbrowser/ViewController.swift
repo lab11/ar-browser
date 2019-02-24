@@ -18,13 +18,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @IBOutlet var webView: WKWebView!
     @IBOutlet var navBar: UINavigationBar!
     @IBOutlet var navIcon: UIBarButtonItem!
-    @IBOutlet var tapLabel: UILabel!
+    @IBOutlet var pressGesture: UILongPressGestureRecognizer!
     
     var qrRequests = [VNRequest]()
     var anchors = [String:ARAnchor]()
-    var arlabels = [ARAnchor:String]()
+    var urls = [ARAnchor:String]()
     var gradient = CAGradientLayer()
     var detectedDataAnchor: ARAnchor?
+    var hitNode = SCNNode()
+    var hitUrl = ""
     var processing = false
     var open = false
 
@@ -34,6 +36,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // Set the view's delegate
         sceneView.delegate = self
         sceneView.session.delegate = self
+        sceneView.autoenablesDefaultLighting = true
 
         // Add gradient background for header
         gradient.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 2 * (navBar.frame.height + UIApplication.shared.statusBarFrame.height))
@@ -44,13 +47,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         // Set initial webview state
         webView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width:view.frame.width, height: UIScreen.main.bounds.height - navBar.frame.maxY)
-        webView.loadHTMLString("<body style='background:#fff3'></body>", baseURL: nil)
-        webView.backgroundColor = .clear
-        webView.isOpaque = false
+        webView.loadHTMLString("<body style='background:#fff8'></body>", baseURL: nil)
         let exitControl = UIRefreshControl()
         exitControl.tintColor = .clear
         exitControl.attributedTitle = NSAttributedString(string: "X", attributes: [.foregroundColor: UIColor.red, .font: UIFont.systemFont(ofSize: 30)])
-        exitControl.addTarget(self, action: #selector(exitWebView(_:)), for: UIControl.Event.valueChanged)
+        exitControl.addTarget(self, action: #selector(pullDown(_:)), for: UIControl.Event.valueChanged)
         webView.scrollView.addSubview(exitControl)
         
         // Create QR Detection Request
@@ -77,88 +78,45 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
 
     func requestHandler(request: VNRequest, error: Error?) {
-        if let results = request.results, let result = results.first as? VNBarcodeObservation, let payload = result.payloadStringValue, payload.starts(with: "http") {
-            // Get the bounding box for the bar code and find the center
-            var rect = result.boundingBox
-            // Flip coordinates
-            rect = rect.applying(CGAffineTransform(scaleX: 1, y: -1))
-            rect = rect.applying(CGAffineTransform(translationX: 0, y: 1))
-            // Get center
-//            let center = CGPoint(x: rect.midX, y: rect.midY)
-            
-//            let url = URL(string:payload)
-//            let req = URLRequest(url: url!)
-            
-            DispatchQueue.main.async {
-                
-//                let webView = CDVViewController()
-//                webView.view.frame = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2)
-//                self.view.addSubview(webView.view)
-//                NSLog(payload)
-                if !self.open {
-                    self.webView.loadHTMLString("<html><body style='background:#fff8'></body></html>", baseURL: nil)
-                    self.navBar.topItem!.title = payload
-                    self.tapLabel.alpha = 0.8
-                    let url = URL(string:payload)
-                    let req = URLRequest(url: url!)
-                    self.webView.load(req)
-                }
-                
-//                if !self.view.subviews.contains(self.webView) {
-//                self.view.addSubview(self.webView!)
-//                self.webView.alpha = 0.9
-//                }
-                
-//                if let hitTestResults = self.sceneView?.hitTest(center, types: [.featurePoint] ),
-//                    let hitTestResult = hitTestResults.first {
-//                    if let detectedDataAnchor = self.detectedDataAnchor,
-//                        let node = self.sceneView.node(for: detectedDataAnchor) {
-//                        node.transform = SCNMatrix4(hitTestResult.worldTransform)
-//                    } else {
-//                        // Create an anchor. The node will be created in delegate methods
-//                        self.detectedDataAnchor = ARAnchor(transform: hitTestResult.worldTransform)
-//                        self.sceneView.session.add(anchor: self.detectedDataAnchor!)
+        if let results = request.results as? [VNBarcodeObservation], let frame = self.sceneView.session.currentFrame {
+            for result in results {
+                if result.confidence == 1, let payload = result.payloadStringValue, payload.starts(with: "http"), anchors[payload] == nil {
+                    let rect = result.boundingBox.applying(CGAffineTransform(scaleX: 1, y: -1)).applying(CGAffineTransform(translationX: 0, y: 1))
+//                    DispatchQueue.global(qos: .background).async {
+//                        if let url = URL(string: payload) {
+//                            URLSession.shared.dataTask(with: URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData , timeoutInterval: 60)).resume()
+//                        }
 //                    }
-//                }
-                self.processing = false
+                    DispatchQueue.main.async {
+                        self.navBar.topItem!.title = ""
+                        self.pressGesture.isEnabled = true
+//                        let url = URL(string:payload)
+//                        URLRequest(url: url!)
+                        if let hitTestResult = frame.hitTest(CGPoint(x: rect.midX, y: rect.midY), types: [.featurePoint]).first {
+//                            if let anchor = self.anchors[payload] {
+//                                if results.count<3, let node = self.sceneView.node(for: anchor) {
+//                                    let animation = CABasicAnimation(keyPath: "transform")
+//                                    animation.fromValue = node.transform
+//                                    animation.toValue = SCNMatrix4(hitTestResult.worldTransform)
+//                                    animation.duration = 0.5
+//                                    node.addAnimation(animation, forKey: nil)
+//                                }
+//                            } else {
+                                // Create an anchor. The node will be created in delegate methods
+                                let anchor = ARAnchor(transform: hitTestResult.worldTransform)
+                            
+                                self.anchors[payload] = anchor
+                                self.urls[anchor] = payload
+                                self.sceneView.session.add(anchor: anchor)
+//                            }
+                        }
+                    }
+                }
             }
-        } else {
+        }
+        DispatchQueue.main.async {
             self.processing = false
         }
-//        if let results = request.results as? [VNBarcodeObservation] {
-//            for result in results {
-//                DispatchQueue.main.async {
-//                    NSLog("%@", result)
-//                    if let hitTestResults = self.sceneView?.hitTest(CGPoint(x: result.boundingBox.midX, y: result.boundingBox.midY), types: [.featurePoint] ), let hitTestResult = hitTestResults.first {
-//                        // Place an anchor
-//                        let anchor = ARAnchor(transform: hitTestResult.worldTransform)
-//                        self.anchors[result.payloadStringValue!] = anchor
-//                        self.arlabels[anchor] = result.payloadStringValue
-//                        self.sceneView.session.add(anchor: anchor)
-//                        //TODO: change to width and height
-////                        let plane = SCNPlane(width: result.boundingBox.width, height: result.boundingBox.height)
-////                        let material = SCNMaterial()
-////                        material.diffuse.contents = UIColor.red
-////                        plane.materials = [material]
-////
-////                        let node = SCNNode()
-////                        node.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
-////
-////                        node.position = SCNVector3(hitTestResult.worldTransform.columns.3.x,
-////                                                   hitTestResult.worldTransform.columns.3.y,
-////                                                   hitTestResult.worldTransform.columns.3.z)
-////
-////                        node.geometry = plane
-////                        self.sceneView.scene.rootNode.addChildNode(node)
-//                    }
-//                }
-//            }
-//            DispatchQueue.main.async {
-//                self.processing = false
-//            }
-//        } else {
-//            self.processing = false
-//        }
     }
     
     
@@ -166,44 +124,28 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-
-//        if self.detectedDataAnchor?.identifier == anchor.identifier {
-            let sphere = SCNSphere(radius: 1.0)
-            sphere.firstMaterial?.diffuse.contents = UIColor.red
-            let sphereNode = SCNNode(geometry: sphere)
-            sphereNode.transform = SCNMatrix4(anchor.transform)
-            return sphereNode
-//        }
-        
-        
-        //TODO: change to width and height
-//        let plane = SCNPlane(width: 0.1, height: 0.1)
-//        let material = SCNMaterial()
-//        material.diffuse.contents = UIColor.red
-//        plane.materials = [material]
-        
-//        let node = SCNNode()
-//        node.simdTransform = anchor.transform;
-//        node.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
-//
-//        node.position = SCNVector3(anchor.transform.columns.3.x,
-//                                   anchor.transform.columns.3.y,
-//                                   anchor.transform.columns.3.z)
-
-//        node.geometry = plane
-//        node.geometry = SCNBox(width: 0.1,height: 0.1,length: 0.1,chamferRadius: 0.1)
-//        node.geometry = SCNText(string: arlabels[anchor], extrusionDepth: 1)
-        
-//        return node
+        let shape = SCNBox(width: 0.025, height: 0.025, length: 0.025, chamferRadius: 0.0)
+        let node = SCNNode(geometry: shape)
+        node.transform = SCNMatrix4(anchor.transform)
+        DispatchQueue.global(qos:.background).async {
+            if let s = self.urls[anchor], let url = URL(string:"https://www.google.com/s2/favicons?domain=" + s), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                node.geometry!.firstMaterial?.diffuse.contents = image
+            }
+        }
+//        let url = URL(string: "")
+//        let data = try? Data(contentsOf: url!)
+//        let Texture = SKTexture(image: UIImage(data: data!)!)
+//        let node = SKSpriteNode(texture: Texture)
+        return node
     }
 
     
     // MARK: - ARSessionDelegate
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        if self.open, webView.title != "" { DispatchQueue.main.async { self.navBar.topItem!.title = self.webView.title } }
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                DispatchQueue.main.async { if self.open { self.navBar.topItem!.title = self.webView.title } }
                 if self.processing || self.open { return }
                 self.processing = true
                 // Create a request handler using the captured image from the ARFrame
@@ -229,33 +171,64 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
     }
     
-    @IBAction func exitWebView(_ sender: UIRefreshControl) {
+    @IBAction func openWebView() {
+        self.open = true
+        CATransaction.setAnimationDuration(1)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.webView.alpha = 0.9
+            self.webView.frame.origin.y = self.navBar.frame.maxY
+            self.gradient.colors = [UIColor(white: 0, alpha: 0.9).cgColor, UIColor(white: 0, alpha: 0.7).cgColor, UIColor.clear.cgColor]
+        })
+        do {
+            self.navIcon = UIBarButtonItem(image: UIImage(data: try Data(contentsOf: URL(string: "http://www.google.com/s2/favicons?domain=" + self.webView.url!.absoluteString)!)), style: .plain, target: self, action: nil)
+        } catch {
+        }
+    }
+    
+    @IBAction func closeWebView() {
+        guard self.webView.alpha > 0 else { return }
+        CATransaction.setAnimationDuration(1)
         UIView.animate(withDuration: 0.5, animations: {
             self.webView.alpha = 0.0
             self.webView.frame.origin.y = self.webView.frame.height
             self.gradient.colors = [UIColor(white: 0, alpha: 0.3).cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor]
         })
-        self.navBar.topItem!.title = self.webView.url!.absoluteString
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) { self.webView.loadHTMLString("<body style='background:#fff8'></body>", baseURL: nil) }
+        self.navBar.topItem!.title = ""
         self.open = false
+    }
+    
+    @IBAction func pullDown(_ sender: UIRefreshControl) {
+        closeWebView()
         sender.endRefreshing()
     }
     
-    @IBAction func navTap() {
-        CATransaction.setAnimationDuration(1)
-        if self.webView.alpha == 0 {
-            guard let ti = self.navBar.topItem, let title = ti.title, title.starts(with:"http") else {return}
-            self.open = true
-            UIView.animate(withDuration: 0.5, animations: {
-                self.webView.alpha = 0.9
-                self.webView.frame.origin.y = self.navBar.frame.maxY
-                self.gradient.colors = [UIColor(white: 0, alpha: 0.9).cgColor, UIColor(white: 0, alpha: 0.7).cgColor, UIColor.clear.cgColor]
-            })
-            do {
-                self.navIcon = UIBarButtonItem(image: UIImage(data: try Data(contentsOf: URL(string: "http://www.google.com/s2/favicons?domain=" + self.webView.url!.absoluteString)!)), style: .plain, target: self, action: nil)
-            } catch {
+    @IBAction func sceneTap(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            if let result = sceneView.hitTest(gesture.location(in: sceneView), options: [.boundingBoxOnly: true]).first {
+                hitNode = result.node
+                hitNode.opacity = 0.6
+                if let anchor = sceneView.anchor(for: hitNode), let s = urls[anchor], let url = URL(string: s) {
+                    hitUrl = s
+                    webView.load(URLRequest(url: url))
+                    navBar.topItem!.title = hitUrl
+                }
             }
-        } else {
-            exitWebView(_:UIRefreshControl())
+        } else if gesture.state == .changed {
+            if let result = sceneView.hitTest(gesture.location(in: sceneView), options: [.boundingBoxOnly: true]).first, result.node == hitNode {
+                navBar.topItem!.title = hitUrl
+                hitNode.opacity = 0.6
+            } else {
+                navBar.topItem!.title = ""
+                hitNode.opacity = 1
+            }
+        } else if gesture.state == .ended {
+            if hitNode.opacity < 1 {
+                openWebView()
+            } else {
+                navBar.topItem!.title = ""
+            }
+            hitNode.opacity = 1
         }
     }
 }
