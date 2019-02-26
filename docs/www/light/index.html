@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: gap: * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+        <link name="favicon" href="https://raw.githubusercontent.com/lab11/summon/master/user-interfaces/examples/light/www/img/logo.png"/>
+        <title>RoboSmart BLE Light</title>
+        <style type="text/css">
+            html, body {height:100%; margin:0; text-align:center; overflow:hidden; white-space:nowrap;}
+            svg {height:calc(100% - 250px); margin:75px 0 0;}
+            h1 {font-family:sans-serif; font-size:50px; line-height:1em; font-weight:300; color:#eee; margin:50px 0; text-shadow:.2vh .2vh .2vh #000}
+            .Dis {-webkit-filter: opacity(20%) grayscale(100%);}
+            .Off {-webkit-filter: grayscale(100%);}
+            </style>
+        </head>
+    <body>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538 932" name="bulb" class="Dis">
+            <g transform="matrix(1.25 0 0 -1.25 -4995.7 416.19) translate(0 2.2375)">
+                <path d="m4294.5-353.43c0-16.179-13.118-29.297-29.297-29.297h-107.25c-16.179 0-29.297 13.118-29.297 29.297v127.07c0 16.182 13.118 29.297 29.297 29.297h107.25c16.179 0 29.297-13.115 29.297-29.297v-127.07" fill="#bbb" />
+                <path d="m4304.6-256.89c0-8.3325-6.7554-15.088-15.088-15.088h-155.81c-8.3325 0-15.088 6.7553-15.088 15.088v4.3823c0 8.3325 6.7554 15.09 15.088 15.09h155.81c8.3325 0 15.088-6.7578 15.088-15.09v-4.3823" fill="#777" />
+                <path d="m4304.6-304.64c0-8.3324-6.7554-15.09-15.088-15.09h-155.81c-8.3325 0-15.088 6.7578-15.088 15.09v4.3823c0 8.3325 6.7554 15.088 15.088 15.088h155.81c8.3325 0 15.088-6.7553 15.088-15.088v-4.3823" fill="#777" />
+                <path d="m4304.6-351.48c0-8.3325-6.7554-15.09-15.088-15.09h-155.81c-8.3325 0-15.088 6.7578-15.088 15.09v4.3823c0 8.3325 6.7554 15.09 15.088 15.09h155.81c8.3325 0 15.088-6.7578 15.088-15.09v-4.3823" fill="#777" />
+                <path d="m4160.9-382.72c9.4263-19.197 28.601-32.348 50.737-32.348s41.311 13.152 50.734 32.348h-101.47" fill="#777" />
+                <path d="m4426.6 115.69c0 118.75-96.266 215.02-215.02 215.02s-215.02-96.269-215.02-215.02c0-42.082 12.1-81.332 32.995-114.48l-0.025-0.002c53.779-92.99 73.059-106.95 73.059-161.02 0-41.914 15.51-60.358 42.754-60.358h66.225 66.225c27.243 0 42.754 18.445 42.754 60.358 0 54.067 19.28 68.027 73.061 161.02l-0.025 0.002c20.893 33.152 32.993 72.402 32.993 114.48" fill="#fc0" />
+            </g>
+        </svg>
+        <h1 id="console"></h1>
+        <script type="text/javascript" src="../js/cordova.js"></script>
+        <script type="text/javascript" src="../js/bluetooth.js"></script>
+        <script>
+            /*
+             * Connects to light bulb, and reads/writes the switch characteristic to turn it on or off
+             */
+        
+            var deviceID = "";
+            
+            var light = {
+                service: 'FF10',                                                                                              // light service uuid
+                onoff: 'FF11',                                                                                                // light switch characteristic uuid
+            };
+        
+            var app = {
+                initialize: function() {
+                    document.addEventListener('deviceready', this.onDeviceReady, false);
+                    document.addEventListener('pause', this.onPause, false);
+                    document.addEventListener('resume', this.onDeviceReady, false);
+                    document.querySelector("svg").addEventListener('touchstart', this.onToggle, false);                       // if bulb image touched, goto: onToggle
+                },
+                onDeviceReady: function() {
+                    document.querySelector("svg").setAttribute("class","Dis");                                                // bulb image in 'disconnected' mode
+                    bluetooth.isEnabled(app.onEnable,function(){                                                              // if BLE enabled, goto: onEnable
+                        document.querySelector("#console").innerHTML = "Bluetooth Off.";                                      // else, alert user
+                    });
+                },
+                onEnable: function() {
+                    document.querySelector("#console").innerHTML = "Searching...";
+                    connectDevice(app.onConnect, app.onDeviceReady);                                                          // start BLE scan; if device connected, goto: onConnect
+                },
+                onConnect: function(device) {
+                    document.querySelector("#console").innerHTML = "Syncing...";
+                    deviceID=device.id;
+                    bluetooth.read(deviceID, light.service, light.onoff, app.onRead, app.onRWError);                          // read switch characteristic; if read is good, goto: onRead
+                },
+                onRead: function(data) {
+                    document.querySelector("svg").setAttribute("class",((new Uint8Array(data))[0]===0x1) ? "On" : "Off");     // bulb image in 'on' or 'off' mode
+                    document.querySelector("#console").innerHTML = document.querySelector("svg").getAttribute("class");       // display text: "On" or "Off"
+                },
+                onToggle: function(event) {
+                    if (document.querySelector("svg").getAttribute("class")!="Dis") {                                         // if image touched & bulb connected,
+                        data = new Uint8Array(1);
+                        data[0] = (document.querySelector("svg").getAttribute("class")=="Off") ? 0x1 : 0x0;                   // set up switch toggle write
+                        bluetooth.write(deviceID, light.service, light.onoff, data.buffer, app.onRead(data), app.onRWError);  // write switch characteristic; if good, goto: onRead
+                    }
+                },
+                onPause: function() {                                                                                         // if user leaves app, stop BLE
+                    bluetooth.disconnectDevice();
+                    bluetooth.stopScan();
+                },
+                onRWError: function() {                                                                                       // on error, try restarting BLE
+                    bluetooth.isEnabled(deviceID,function(){},app.onDeviceReady);
+                    bluetooth.isConnected(deviceID,function(){},app.onDeviceReady);
+                }
+            };
+        
+            var connectDevice = function(success, failure) {
+                ble.stopScan(function(){
+                    ble.startScan([], function(device){
+                        if (device.name.startsWith("SHL")) {
+                            ble.stopScan(function(){
+                                bluetooth.connect(device.id, success, failure)
+                            },failure);
+                        }
+                    }, failure)
+                },failure);
+            };
+        
+            if (navigator.userAgent.endsWith("ARBrowser")) { app.initialize() }
+            else { location = "https://itunes.apple.com/us/app/ar-browser-lab11/id1453746316" }
+        </script>
+    </body>
+</html>

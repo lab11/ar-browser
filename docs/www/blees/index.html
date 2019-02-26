@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PowerBlade</title>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: gap: * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+        <link name="favicon" href="https://raw.githubusercontent.com/lab11/summon/master/user-interfaces/examples/blees-list/www/img/blees.ico"/>
+        <style>
+            body {text-align:center; color:#eef; font-family:sans-serif; text-shadow:.2vh .2vh .2vh #000}
+            img {height:20vh; box-shadow: 0 0 .5vh #000; border-radius:10vh}
+            div {margin:4vh 0; padding:0; font-size:2vh}
+            span {font-size:4vh}
+            .shake {animation:shake; animation-duration:1s; animation-timing-function:ease-in-out;}
+            #acce {margin:6vh 0 4vh; opacity:0; transition: opacity .5s}
+            #acce.shake {opacity:1}
+            @keyframes shake { 0% { transform:translate(0) } 33% { transform:translate(5vh) } 66% { transform:translate(-5vh) } 100% { transform:translate(0) } } }
+        </style>
+    </head>
+    <body>
+        <div id="acce" class="">MOVEMENT DETECTED</div>
+        <img src="https://raw.githubusercontent.com/lab11/summon/master/user-interfaces/examples/blees-list/www/img/blees.ico" class=""/>
+        <div id="console">Searching...</div>
+        <div>TEMPARATURE<br/><span id="temp">-</span></div>
+        <div>HUMIDITY<br/><span id="humi">-</span></div>
+        <div>PRESSURE<br/><span id="pres">-</span></div>
+        <div>LUX<br/><span id="luxx">-</span></div>
+        <script src="../js/cordova.js"></script>
+        <script>
+            var last_update = 0;
+            var app = {
+               // Application Constructor
+                initialize: _ => {
+                    document.addEventListener('deviceready', app.onReady, false)
+                    document.addEventListener('resume', app.onReady, false)
+                    document.addEventListener('pause', unload = app.onPause, false)
+                },
+                onReady: _ => {
+                    ble.isEnabled(app.onEnable, _ => { print('console', 'Bluetooth is disabled!') })
+                },
+                onEnable: _ => {
+                    ble.startScan([], app.onDiscover, app.onReady)
+                },
+                onDiscover: device => {
+                    if (device.name == "BLEES" && device.advertising.kCBAdvDataServiceUUIDs.indexOf('181A') !== -1) {
+                        md = new Uint8Array(device.advertising.kCBAdvDataManufacturerData);
+
+                        // Pressure
+                        pressure_pascals = (((md[6] * 16777216) + (md[5] * 65536 ) + (md[4] * 256) + md[3] )/10);
+                        pressure_mmHg = (pressure_pascals * 0.007500616827042).toFixed(1);
+                        pressure_atm = (pressure_pascals*0.00000986923266716).toFixed(3);
+                        pressureOut = pressure_mmHg + ' mmHg &nbsp; | &nbsp; ' + pressure_atm + ' atm';
+                        print('pres', pressureOut);
+
+                        // Humidity
+                        var humidityOut = (((md[8] * 256) + md[7] )/100) + String.fromCharCode(37);
+                        print('humi', humidityOut);
+
+                        // Temperature
+                        temp1 = (md[10] * 256) + md[9];
+                        temp2 = temp1 > 32767 ? temp1 - 65536 : temp1;
+                        temp_celsius = (temp2/100).toFixed(1) + " " + String.fromCharCode(176) + "C";
+                        temp_fahrenheit = (temp2 * 9 / 500 + 32).toFixed(1)  + " " + String.fromCharCode(176) + "F";
+                        tempOut = temp_celsius + " &nbsp; | &nbsp; " + temp_fahrenheit
+                        print('temp', tempOut);
+
+                        // Lux
+                        var luxOut = ( (md[12] * 256) + md[11]) + " lux" ;
+                        print('luxx', luxOut);
+
+                        // Acceleration
+                        if (md[13] & 1) {
+                            document.querySelector('img').className = document.querySelector('#acce').className = "shake"
+                            setTimeout(_ => document.querySelector('img').className = document.querySelector('#acce').className = "", 2000)
+                        }
+
+                        print('console', 'Updated at ' + (new Date()).toLocaleTimeString())
+
+                        ble.stopScan(app.onEnable, app.onReady)
+                    }
+               },
+               onPause: _ => {
+                   ble.stopScan()
+               }
+            }
+            print = (i,s) => { document.getElementById(i).innerHTML = s }
+            if (navigator.userAgent.endsWith("ARBrowser")) { app.initialize() }
+            else { location = "https://itunes.apple.com/us/app/ar-browser-lab11/id1453746316" }
+        </script>
+    </body>
+</html>

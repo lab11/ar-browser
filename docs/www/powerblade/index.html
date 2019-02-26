@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PowerBlade</title>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: gap: * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+        <link name="favicon" href="https://raw.githubusercontent.com/lab11/powerblade/master/software/summon/img/powerblade.png"/>
+        <style>
+            body {text-align:center; color:#eef; font-family:sans-serif; text-shadow:.2vh .2vh .2vh #000}
+            img {margin:10vh 0 0; height:20vh; box-shadow: 0 0 .5vh #000}
+            div {margin:4vh 0; padding:0; font-size:3vh}
+            span {font-size:6vh}
+        </style>
+    </head>
+    <body>
+        <img src="https://raw.githubusercontent.com/lab11/powerblade/master/software/summon/img/powerblade.png"/>
+        <div id="console">Searching...</div>
+        <div>RMS VOLTAGE<br/><span id="voltage">-</span></div>
+        <div>CURRENT POWER<br/><span id="power">-</span></div>
+        <div>CUMULATIVE ENERGY<br/><span id="energy">-</span></div>
+        <script src="../js/cordova.js"></script>
+        <script>
+            UMICH_COMPANY_ID = 0x02E0;
+            POWERBLADE_SERVICE_ID = 0x11;
+            OLD_COMPANY_ID = 0x4908;
+
+            app = {
+                initialize: _ => {
+                    document.addEventListener('deviceready', app.onReady, false)
+                    document.addEventListener('resume', app.onReady, false)
+                    document.addEventListener('pause', unload = app.onPause, false)
+                },
+                onReady: _ => {
+                    ble.isEnabled(app.onEnable, _ => { print('console', 'Bluetooth is disabled!') })
+                },
+                onEnable: _ => {
+                    ble.startScan([], app.onDiscover, app.onReady)
+                },
+                onDiscover: peripheral => {
+                    company_id = 0;
+                    service_id = 0;
+                    md = new Uint8Array(peripheral.advertising.kCBAdvDataManufacturerData)
+                    if (md !== undefined && md && md.length >= 3) {
+                        company_id = (md[1]<<8) | md[0];
+                        service_id = md[2];
+                    }
+                    
+                    // check that this is a powerblade data packet
+                    //  Eddystone packets are silently ignored
+                    if ((company_id == UMICH_COMPANY_ID && service_id == POWERBLADE_SERVICE_ID) || company_id == OLD_COMPANY_ID) {
+                        
+                        // values to be displayed
+                        var v_rms_disp = 0;
+                        var real_power_disp = 0;
+                        var app_power_disp = 0;
+                        var watt_hours_disp = 0;
+                        var pf_disp = 0;
+                        
+                        // parse values from advertisement
+                        var data = new DataView(new Uint8Array(md.subarray(3)).buffer);
+                        if (company_id == OLD_COMPANY_ID) {
+                            // support old packet format
+                            data = new DataView(new Uint8Array(md.subrarray(2)).buffer);
+                        }
+                        
+                        var powerblade_id  = data.getUint8(0);
+                        var sequence_num   = data.getUint32(1);
+                        var pscale         = data.getUint16(5);
+                        var vscale         = data.getUint8(7);
+                        var whscale        = data.getUint8(8);
+                        var v_rms          = data.getUint8(9);
+                        var real_power     = data.getUint16(10);
+                        var apparent_power = data.getUint16(12);
+                        var watt_hours     = data.getUint32(14);
+                        var flags          = data.getUint8(18);
+                        
+                        // do maths
+                        var volt_scale = vscale / 200;
+                        var power_scale = (pscale & 0x0FFF) * Math.pow(10,-1*((pscale & 0xF000) >> 12));
+                        var wh_shift = whscale;
+                        var v_rms_disp = v_rms*volt_scale;
+                        var real_power_disp = real_power*power_scale;
+                        var app_power_disp = apparent_power*power_scale;
+                        if(volt_scale > 0) {
+                            var watt_hours_disp = (watt_hours << wh_shift)*(power_scale/3600);
+                        }
+                        else {
+                            var watt_hours_disp = watt_hours;
+                        }
+                        var pf_disp = real_power_disp / app_power_disp;
+
+                        // write to user interface
+                        print('voltage', v_rms_disp.toFixed(2) + " V")
+                        print('power', real_power_disp.toFixed(2) + " W")
+                        print('energy', watt_hours_disp.toFixed(2) + " Wh")
+                        // document.getElementById("apparentPowerVal").innerHTML    = app_power_disp.toFixed(2) + " W";
+                        // document.getElementById("powerFactorVal").innerHTML      = pf_disp.toFixed(2);
+                        print('console', 'Updated at ' + (new Date()).toLocaleTimeString())
+                        
+                        ble.stopScan(app.onEnable, app.onReady)
+                    }
+                },
+                onPause: _ => {
+                    ble.stopScan()
+                }
+            }
+            print = (i,s) => { document.getElementById(i).innerHTML = s }
+            if (navigator.userAgent.endsWith("ARBrowser")) { app.initialize() }
+            else { location = "https://itunes.apple.com/us/app/ar-browser-lab11/id1453746316" }
+        </script>
+    </body>
+</html>
