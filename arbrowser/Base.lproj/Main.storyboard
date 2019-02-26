@@ -94,14 +94,13 @@
                                     <outletCollection property="gestureRecognizers" destination="tCg-F1-bi9" appends="YES" id="CPH-1s-Hcc"/>
                                 </connections>
                             </navigationBar>
-                            <wkWebView opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" allowsBackForwardNavigationGestures="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YwX-iA-ES0">
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TYu-O4-5kN">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <wkWebViewConfiguration key="configuration" allowsInlineMediaPlayback="YES">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" audio="YES" video="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
+                                <connections>
+                                    <segue destination="bjn-gF-RsU" kind="embed" identifier="cordova" id="hVd-GB-8rO"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="jOZ-cD-85V" firstAttribute="trailing" secondItem="BrB-h1-WRS" secondAttribute="trailing" id="06j-dT-CXa"/>
@@ -120,11 +119,12 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="container" destination="TYu-O4-5kN" id="HDQ-cJ-NvC"/>
+                        <outlet property="crossHair" destination="IdB-Qs-vfe" id="oEx-af-3Gh"/>
                         <outlet property="navBar" destination="jOZ-cD-85V" id="GGA-A8-iXK"/>
                         <outlet property="navIcon" destination="eQu-Ew-PNM" id="4jt-HH-oJo"/>
                         <outlet property="pressGesture" destination="Qi4-Uh-xW0" id="Ggf-FP-KRa"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
-                        <outlet property="webView" destination="YwX-iA-ES0" id="X5T-Sn-2SX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
@@ -140,6 +140,20 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="53.600000000000001" y="27.436281859070466"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Xn8-Mw-88D">
+            <objects>
+                <viewController id="bjn-gF-RsU" customClass="CDVViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FX0-gN-zgE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="rVv-1k-PrG"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="L1m-BJ-E6N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="776" y="27"/>
         </scene>
     </scenes>
 </document>
