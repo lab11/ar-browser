@@ -4,7 +4,7 @@
         <title>PowerBlade</title>
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: gap: * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
-        <link name="favicon" href="favicon.png"/>
+        <link rel="shortcut icon" href="favicon.png"/>
         <style>
             body {text-align:center; color:#eef; font-family:sans-serif; text-shadow:.2vh .2vh .2vh #000}
             img {margin:10vh 0 0; height:20vh; box-shadow: 0 0 .5vh #000}
@@ -105,8 +105,8 @@
                 }
             }
             print = (i,s) => { document.getElementById(i).innerHTML = s }
-            // if (navigator.userAgent.endsWith("ARBrowser")) { app.initialize() }
-            // else { /*location = "https://itunes.apple.com/us/app/ar-browser-lab11/id1453746316"*/ }
+            if (navigator.userAgent.endsWith("ARBrowser")) { app.initialize() }
+            else { location = "https://itunes.apple.com/us/app/ar-browser-lab11/id1453746316" }
         </script>
     </body>
 </html>
