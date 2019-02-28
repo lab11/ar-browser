@@ -163,7 +163,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             DispatchQueue.main.async { self.navBar.topItem!.title = "" }
         }
         DispatchQueue.global(qos:.background).async {
-            if let s = self.urls[anchor], let url = URL(string:"https://www.google.com/s2/favicons?domain=" + s), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+            if let s = self.urls[anchor], let url = URL(string: (s.starts(with: "https://lab11.github") ? s + "/favicon.png" : "https://www.google.com/s2/favicons?domain=" + s)), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                 node.geometry!.firstMaterial?.diffuse.contents = image
             }
         }
