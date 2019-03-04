@@ -90,7 +90,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     func clearARSession() {
         // Called by sessionInterruptionDidEnd
-        DispatchQueue.main.async { self.navBar.topItem!.title = "Resetting Scene..." }
+        DispatchQueue.main.async { self.navBar.topItem!.title = "Scan a QR Code" }
         pressGesture.isEnabled = false
         sceneView.scene.rootNode.enumerateChildNodes { (node, stop) in node.removeFromParentNode() }
         anchors = [String:ARAnchor]()
@@ -126,12 +126,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                         if let hitTestResult = frame.hitTest(CGPoint(x: rect.midX, y: rect.midY), types: [.featurePoint]).first {
                             if let anchor = self.anchors[payload] {
                                 if let node = self.sceneView.node(for: anchor) {
-//                                    let animation = CABasicAnimation(keyPath: "transform")
-//                                    animation.fromValue = node.transform
-//                                    animation.toValue = SCNMatrix4(hitTestResult.worldTransform)
-//                                    animation.duration = 1
-//                                    node.addAnimation(animation, forKey: nil)
-                                    node.transform = SCNMatrix4(hitTestResult.worldTransform)
+                                    node.transform = SCNMatrix4(node.simdTransform*0.8 + hitTestResult.worldTransform*0.2)
                                 }
                             } else {
                                 // Create an anchor. The node will be created in delegate methods
@@ -158,6 +153,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let shape = SCNBox(width: 0.025, height: 0.025, length: 0.025, chamferRadius: 0.0)
         let node = SCNNode(geometry: shape)
         node.transform = SCNMatrix4(anchor.transform)
+        node.geometry!.firstMaterial?.isDoubleSided = true
         if self.pressGesture.isEnabled == false {
             self.pressGesture.isEnabled = true
             DispatchQueue.main.async { self.navBar.topItem!.title = "" }
@@ -167,10 +163,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 node.geometry!.firstMaterial?.diffuse.contents = image
             }
         }
-//        let url = URL(string: "")
-//        let data = try? Data(contentsOf: url!)
-//        let Texture = SKTexture(image: UIImage(data: data!)!)
-//        let node = SKSpriteNode(texture: Texture)
         return node
     }
 
@@ -193,14 +185,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     
     // MARK: - ARSessionObserver
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user    
-    }
-    
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-    }
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
