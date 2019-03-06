@@ -182,7 +182,6 @@
 			isa = PBXGroup;
 			children = (
 				E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */,
-				E9575B9D2224512C00618F10 /* www */,
 				E99062C1221B551E00F0063F /* arbrowser */,
 				E99062C0221B551E00F0063F /* Products */,
 				E9575B8D2224203D00618F10 /* Frameworks */,
@@ -209,6 +208,7 @@
 				E99062CD221B551F00F0063F /* LaunchScreen.storyboard */,
 				E99062D0221B551F00F0063F /* Info.plist */,
 				E99062E0221C732E00F0063F /* arbrowser-Bridging-Header.h */,
+				E9575B9D2224512C00618F10 /* www */,
 			);
 			path = arbrowser;
 			sourceTree = "<group>";
