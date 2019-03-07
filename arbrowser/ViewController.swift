@@ -215,8 +215,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             self.crossHair.alpha = 0.8
             self.gradient.colors = [UIColor(white: 0, alpha: 0.3).cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor]
         })
-        
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) { self.webView.loadFileURL(self.homeUrl!, allowingReadAccessTo: self.homeUrl!.deletingPathExtension()) }
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            self.webView.evaluateJavaScript("ble.stopScan(); Lifx.destroy()")
+            self.webView.loadFileURL(self.homeUrl!, allowingReadAccessTo: self.homeUrl!.deletingPathExtension())
+        }
         self.navBar.topItem!.title = ""
         self.open = false
     }

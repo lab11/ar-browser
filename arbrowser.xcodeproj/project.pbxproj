@@ -9,13 +9,6 @@
 /* Begin PBXBuildFile section */
 		E9371E1C22247D7600A1CED2 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9371E1722247D3400A1CED2 /* libCordova.a */; };
 		E9575B9E2224512D00618F10 /* www in Resources */ = {isa = PBXBuildFile; fileRef = E9575B9D2224512C00618F10 /* www */; };
-		E9575BB02224536B00618F10 /* CBPeripheral+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = E9575BA22224536B00618F10 /* CBPeripheral+Extensions.m */; };
-		E9575BB12224536B00618F10 /* BLECommandContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E9575BA32224536B00618F10 /* BLECommandContext.m */; };
-		E9575BB22224536B00618F10 /* BLECentralPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = E9575BA42224536B00618F10 /* BLECentralPlugin.m */; };
-		E9575BB32224536B00618F10 /* README in Resources */ = {isa = PBXBuildFile; fileRef = E9575BA82224536B00618F10 /* README */; };
-		E9575BB42224536B00618F10 /* CDVWKWebViewEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E9575BAB2224536B00618F10 /* CDVWKWebViewEngine.m */; };
-		E9575BB52224536B00618F10 /* CDVWKWebViewUIDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E9575BAD2224536B00618F10 /* CDVWKWebViewUIDelegate.m */; };
-		E9575BB62224536B00618F10 /* CDVWKProcessPoolFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E9575BAF2224536B00618F10 /* CDVWKProcessPoolFactory.m */; };
 		E9575BBC22245BC400618F10 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BB822245B1B00618F10 /* CoreBluetooth.framework */; };
 		E9575BBE22245C8900618F10 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BBD22245C8800618F10 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E99062C3221B551E00F0063F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99062C2221B551E00F0063F /* AppDelegate.swift */; };
@@ -24,6 +17,16 @@
 		E99062CC221B551F00F0063F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E99062CB221B551F00F0063F /* Assets.xcassets */; };
 		E99062CF221B551F00F0063F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E99062CD221B551F00F0063F /* LaunchScreen.storyboard */; };
 		E99062E6221C783F00F0063F /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = E99062E5221C783F00F0063F /* config.xml */; };
+		E9FCCC7F223082980074EC5F /* CBPeripheral+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC6A223082980074EC5F /* CBPeripheral+Extensions.m */; };
+		E9FCCC80223082980074EC5F /* BLECommandContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC6B223082980074EC5F /* BLECommandContext.m */; };
+		E9FCCC81223082980074EC5F /* BLECentralPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC6C223082980074EC5F /* BLECentralPlugin.m */; };
+		E9FCCC82223082980074EC5F /* README in Resources */ = {isa = PBXBuildFile; fileRef = E9FCCC70223082980074EC5F /* README */; };
+		E9FCCC83223082980074EC5F /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC72223082980074EC5F /* GCDAsyncUdpSocket.m */; };
+		E9FCCC84223082980074EC5F /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC73223082980074EC5F /* GCDAsyncSocket.m */; };
+		E9FCCC85223082980074EC5F /* ChromeSocketsUdp.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC77223082980074EC5F /* ChromeSocketsUdp.m */; };
+		E9FCCC86223082980074EC5F /* CDVWKWebViewEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC7A223082980074EC5F /* CDVWKWebViewEngine.m */; };
+		E9FCCC87223082980074EC5F /* CDVWKWebViewUIDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC7C223082980074EC5F /* CDVWKWebViewUIDelegate.m */; };
+		E9FCCC88223082980074EC5F /* CDVWKProcessPoolFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FCCC7E223082980074EC5F /* CDVWKProcessPoolFactory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,19 +72,6 @@
 		E9575B922224205300618F10 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E9575B942224205C00618F10 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		E9575B9D2224512C00618F10 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
-		E9575BA22224536B00618F10 /* CBPeripheral+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBPeripheral+Extensions.m"; sourceTree = "<group>"; };
-		E9575BA32224536B00618F10 /* BLECommandContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLECommandContext.m; sourceTree = "<group>"; };
-		E9575BA42224536B00618F10 /* BLECentralPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLECentralPlugin.m; sourceTree = "<group>"; };
-		E9575BA52224536B00618F10 /* CBPeripheral+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CBPeripheral+Extensions.h"; sourceTree = "<group>"; };
-		E9575BA62224536B00618F10 /* BLECommandContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLECommandContext.h; sourceTree = "<group>"; };
-		E9575BA72224536B00618F10 /* BLECentralPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLECentralPlugin.h; sourceTree = "<group>"; };
-		E9575BA82224536B00618F10 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		E9575BAA2224536B00618F10 /* CDVWKWebViewUIDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDVWKWebViewUIDelegate.h; sourceTree = "<group>"; };
-		E9575BAB2224536B00618F10 /* CDVWKWebViewEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDVWKWebViewEngine.m; sourceTree = "<group>"; };
-		E9575BAC2224536B00618F10 /* CDVWKProcessPoolFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDVWKProcessPoolFactory.h; sourceTree = "<group>"; };
-		E9575BAD2224536B00618F10 /* CDVWKWebViewUIDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDVWKWebViewUIDelegate.m; sourceTree = "<group>"; };
-		E9575BAE2224536B00618F10 /* CDVWKWebViewEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDVWKWebViewEngine.h; sourceTree = "<group>"; };
-		E9575BAF2224536B00618F10 /* CDVWKProcessPoolFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDVWKProcessPoolFactory.m; sourceTree = "<group>"; };
 		E9575BB822245B1B00618F10 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		E9575BBD22245C8800618F10 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E99062BF221B551E00F0063F /* arbrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = arbrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +85,24 @@
 		E99062E5221C783F00F0063F /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		E99EE73422247CD400492B84 /* libCordova.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCordova.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9FCCC6A223082980074EC5F /* CBPeripheral+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBPeripheral+Extensions.m"; sourceTree = "<group>"; };
+		E9FCCC6B223082980074EC5F /* BLECommandContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLECommandContext.m; sourceTree = "<group>"; };
+		E9FCCC6C223082980074EC5F /* BLECentralPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLECentralPlugin.m; sourceTree = "<group>"; };
+		E9FCCC6D223082980074EC5F /* CBPeripheral+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CBPeripheral+Extensions.h"; sourceTree = "<group>"; };
+		E9FCCC6E223082980074EC5F /* BLECommandContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLECommandContext.h; sourceTree = "<group>"; };
+		E9FCCC6F223082980074EC5F /* BLECentralPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLECentralPlugin.h; sourceTree = "<group>"; };
+		E9FCCC70223082980074EC5F /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		E9FCCC72223082980074EC5F /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		E9FCCC73223082980074EC5F /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		E9FCCC74223082980074EC5F /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		E9FCCC75223082980074EC5F /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		E9FCCC77223082980074EC5F /* ChromeSocketsUdp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromeSocketsUdp.m; sourceTree = "<group>"; };
+		E9FCCC79223082980074EC5F /* CDVWKWebViewUIDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDVWKWebViewUIDelegate.h; sourceTree = "<group>"; };
+		E9FCCC7A223082980074EC5F /* CDVWKWebViewEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDVWKWebViewEngine.m; sourceTree = "<group>"; };
+		E9FCCC7B223082980074EC5F /* CDVWKProcessPoolFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDVWKProcessPoolFactory.h; sourceTree = "<group>"; };
+		E9FCCC7C223082980074EC5F /* CDVWKWebViewUIDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDVWKWebViewUIDelegate.m; sourceTree = "<group>"; };
+		E9FCCC7D223082980074EC5F /* CDVWKWebViewEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDVWKWebViewEngine.h; sourceTree = "<group>"; };
+		E9FCCC7E223082980074EC5F /* CDVWKProcessPoolFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDVWKProcessPoolFactory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,50 +142,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E9575B9F2224536B00618F10 /* Plugins */ = {
-			isa = PBXGroup;
-			children = (
-				E9575BA02224536B00618F10 /* cordova-plugin-ble-central */,
-				E9575BA82224536B00618F10 /* README */,
-				E9575BA92224536B00618F10 /* cordova-plugin-wkwebview-engine */,
-			);
-			path = Plugins;
-			sourceTree = "<group>";
-		};
-		E9575BA02224536B00618F10 /* cordova-plugin-ble-central */ = {
-			isa = PBXGroup;
-			children = (
-				E9575BA12224536B00618F10 /* BLECentralPlugin */,
-			);
-			path = "cordova-plugin-ble-central";
-			sourceTree = "<group>";
-		};
-		E9575BA12224536B00618F10 /* BLECentralPlugin */ = {
-			isa = PBXGroup;
-			children = (
-				E9575BA22224536B00618F10 /* CBPeripheral+Extensions.m */,
-				E9575BA32224536B00618F10 /* BLECommandContext.m */,
-				E9575BA42224536B00618F10 /* BLECentralPlugin.m */,
-				E9575BA52224536B00618F10 /* CBPeripheral+Extensions.h */,
-				E9575BA62224536B00618F10 /* BLECommandContext.h */,
-				E9575BA72224536B00618F10 /* BLECentralPlugin.h */,
-			);
-			path = BLECentralPlugin;
-			sourceTree = "<group>";
-		};
-		E9575BA92224536B00618F10 /* cordova-plugin-wkwebview-engine */ = {
-			isa = PBXGroup;
-			children = (
-				E9575BAA2224536B00618F10 /* CDVWKWebViewUIDelegate.h */,
-				E9575BAB2224536B00618F10 /* CDVWKWebViewEngine.m */,
-				E9575BAC2224536B00618F10 /* CDVWKProcessPoolFactory.h */,
-				E9575BAD2224536B00618F10 /* CDVWKWebViewUIDelegate.m */,
-				E9575BAE2224536B00618F10 /* CDVWKWebViewEngine.h */,
-				E9575BAF2224536B00618F10 /* CDVWKProcessPoolFactory.m */,
-			);
-			path = "cordova-plugin-wkwebview-engine";
-			sourceTree = "<group>";
-		};
 		E99062B6221B551E00F0063F = {
 			isa = PBXGroup;
 			children = (
@@ -200,9 +164,9 @@
 			isa = PBXGroup;
 			children = (
 				E99062C2221B551E00F0063F /* AppDelegate.swift */,
-				E9575B9F2224536B00618F10 /* Plugins */,
 				E99062C6221B551E00F0063F /* ViewController.swift */,
 				E99062E5221C783F00F0063F /* config.xml */,
+				E9FCCC67223082980074EC5F /* Plugins */,
 				E99062C8221B551E00F0063F /* Main.storyboard */,
 				E99062CB221B551F00F0063F /* Assets.xcassets */,
 				E99062CD221B551F00F0063F /* LaunchScreen.storyboard */,
@@ -211,6 +175,71 @@
 				E9575B9D2224512C00618F10 /* www */,
 			);
 			path = arbrowser;
+			sourceTree = "<group>";
+		};
+		E9FCCC67223082980074EC5F /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				E9FCCC68223082980074EC5F /* cordova-plugin-ble-central */,
+				E9FCCC70223082980074EC5F /* README */,
+				E9FCCC71223082980074EC5F /* cordova-plugin-chrome-apps-iossocketscommon */,
+				E9FCCC76223082980074EC5F /* cordova-plugin-chrome-apps-sockets-udp */,
+				E9FCCC78223082980074EC5F /* cordova-plugin-wkwebview-engine */,
+			);
+			path = Plugins;
+			sourceTree = "<group>";
+		};
+		E9FCCC68223082980074EC5F /* cordova-plugin-ble-central */ = {
+			isa = PBXGroup;
+			children = (
+				E9FCCC69223082980074EC5F /* BLECentralPlugin */,
+			);
+			path = "cordova-plugin-ble-central";
+			sourceTree = "<group>";
+		};
+		E9FCCC69223082980074EC5F /* BLECentralPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				E9FCCC6A223082980074EC5F /* CBPeripheral+Extensions.m */,
+				E9FCCC6B223082980074EC5F /* BLECommandContext.m */,
+				E9FCCC6C223082980074EC5F /* BLECentralPlugin.m */,
+				E9FCCC6D223082980074EC5F /* CBPeripheral+Extensions.h */,
+				E9FCCC6E223082980074EC5F /* BLECommandContext.h */,
+				E9FCCC6F223082980074EC5F /* BLECentralPlugin.h */,
+			);
+			path = BLECentralPlugin;
+			sourceTree = "<group>";
+		};
+		E9FCCC71223082980074EC5F /* cordova-plugin-chrome-apps-iossocketscommon */ = {
+			isa = PBXGroup;
+			children = (
+				E9FCCC72223082980074EC5F /* GCDAsyncUdpSocket.m */,
+				E9FCCC73223082980074EC5F /* GCDAsyncSocket.m */,
+				E9FCCC74223082980074EC5F /* GCDAsyncUdpSocket.h */,
+				E9FCCC75223082980074EC5F /* GCDAsyncSocket.h */,
+			);
+			path = "cordova-plugin-chrome-apps-iossocketscommon";
+			sourceTree = "<group>";
+		};
+		E9FCCC76223082980074EC5F /* cordova-plugin-chrome-apps-sockets-udp */ = {
+			isa = PBXGroup;
+			children = (
+				E9FCCC77223082980074EC5F /* ChromeSocketsUdp.m */,
+			);
+			path = "cordova-plugin-chrome-apps-sockets-udp";
+			sourceTree = "<group>";
+		};
+		E9FCCC78223082980074EC5F /* cordova-plugin-wkwebview-engine */ = {
+			isa = PBXGroup;
+			children = (
+				E9FCCC79223082980074EC5F /* CDVWKWebViewUIDelegate.h */,
+				E9FCCC7A223082980074EC5F /* CDVWKWebViewEngine.m */,
+				E9FCCC7B223082980074EC5F /* CDVWKProcessPoolFactory.h */,
+				E9FCCC7C223082980074EC5F /* CDVWKWebViewUIDelegate.m */,
+				E9FCCC7D223082980074EC5F /* CDVWKWebViewEngine.h */,
+				E9FCCC7E223082980074EC5F /* CDVWKProcessPoolFactory.m */,
+			);
+			path = "cordova-plugin-wkwebview-engine";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,7 +326,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9575BB32224536B00618F10 /* README in Resources */,
+				E9FCCC82223082980074EC5F /* README in Resources */,
 				E99062CF221B551F00F0063F /* LaunchScreen.storyboard in Resources */,
 				E99062CC221B551F00F0063F /* Assets.xcassets in Resources */,
 				E99062CA221B551E00F0063F /* Main.storyboard in Resources */,
@@ -313,14 +342,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9FCCC85223082980074EC5F /* ChromeSocketsUdp.m in Sources */,
 				E99062C7221B551E00F0063F /* ViewController.swift in Sources */,
-				E9575BB12224536B00618F10 /* BLECommandContext.m in Sources */,
-				E9575BB22224536B00618F10 /* BLECentralPlugin.m in Sources */,
-				E9575BB42224536B00618F10 /* CDVWKWebViewEngine.m in Sources */,
-				E9575BB62224536B00618F10 /* CDVWKProcessPoolFactory.m in Sources */,
+				E9FCCC80223082980074EC5F /* BLECommandContext.m in Sources */,
+				E9FCCC86223082980074EC5F /* CDVWKWebViewEngine.m in Sources */,
+				E9FCCC87223082980074EC5F /* CDVWKWebViewUIDelegate.m in Sources */,
+				E9FCCC81223082980074EC5F /* BLECentralPlugin.m in Sources */,
+				E9FCCC88223082980074EC5F /* CDVWKProcessPoolFactory.m in Sources */,
 				E99062C3221B551E00F0063F /* AppDelegate.swift in Sources */,
-				E9575BB52224536B00618F10 /* CDVWKWebViewUIDelegate.m in Sources */,
-				E9575BB02224536B00618F10 /* CBPeripheral+Extensions.m in Sources */,
+				E9FCCC83223082980074EC5F /* GCDAsyncUdpSocket.m in Sources */,
+				E9FCCC84223082980074EC5F /* GCDAsyncSocket.m in Sources */,
+				E9FCCC7F223082980074EC5F /* CBPeripheral+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
