@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src * gap: data: about: 'self' 'unsafe-inline' 'unsafe-eval'">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+        <link rel="shortcut icon" href="favicon.png"/>
+        <title>LIFX</title>
+        <style type="text/css">
+            html, body {height:100%; margin:0; white-space:nowrap; font-family:sans-serif; text-align:center; -webkit-user-select:none}
+            .group {margin:10px; background:#000e; color:#fff; border-radius:10px; font-size:20px; line-height:60px; text-overflow:ellipsis; overflow:hidden; box-shadow:0 0 10px #0008; transition:all 1s, color .5s}
+            .item {margin:0 10px 10px; padding:0 40px; background:#fff3; color:#ccc; border-radius:10px; font-size:20px; line-height:60px; text-overflow:ellipsis; overflow:hidden; box-shadow:0 0 10px #0008; -webkit-tap-highlight-color:#4093; opacity:1; transition:all 1s}
+            .item img {position:absolute; left:0; height:40px; margin:10px 35px; filter:grayscale(0%);}
+            [state=off] img, [state=dis] img {filter: grayscale(100%)}
+            [state=dis] {opacity:0; line-height:0; margin:0}
+            #title {background:#205e; color:#fff}
+        </style>
+        </head>
+    <body>
+        <div class="group" id="title">Searching for LIFX...</div>
+        <script src="../js/cordova.js"></script>
+        <script src="lifx.js"></script>
+        <script>
+            var $ = s => document.getElementById(s);
+            var app = {
+                initialize: _ => {
+                    document.addEventListener('deviceready', app.onAppReady, false);
+                    document.addEventListener('pause', unload = app.onPause, false);
+                    document.addEventListener('resume', app.onAppReady, false);
+                    app.lights = {};
+                },
+                onAppReady: _ => {
+                    Lifx.discover({wait:250}).then(devices => {
+                        console.log("discover")
+                        devices.forEach(device => {
+                            if (!app.lights[device.mac]) {
+                                var locat = device.deviceInfo.location.label.toUpperCase();
+                                var group = device.deviceInfo.group;
+                                app.lights[device.mac] = device;
+                                if ($('title').innerHTML != locat) {
+                                    $('title').style.color = '#fff0';
+                                    setTimeout(_ => {
+                                        $('title').innerHTML = locat;
+                                        $('title').style.color = '#fff';
+                                    },500);
+                                }
+                                if (!$(group.guid)) $('title').insertAdjacentHTML('afterend','<div class="group" id="'+group.guid+'" state="dis" onclick="">'+group.label+'</div>');
+                                if (!$(device.mac)) $(group.guid).insertAdjacentHTML('beforeend','<div class="item" id="'+device.mac+'" state="dis" onclick="app.onTouch(this)"><img src="light.svg"/>'+device.deviceInfo.label+'</div>');
+                                setTimeout(_ => $(group.guid).setAttribute('state',''),10);
+                            }
+                            var getState = _ => device.getLightState().then(state => $(device.mac).setAttribute('state',state.power?'on':'off')).catch(getState);
+                            // $(device.mac).style.filter = 'hue-rotate(' + state.color.hue + 'turn) saturate(' + state.color.saturation + ')';
+                            getState();
+                        });
+                        setTimeout(app.onAppReady,500)
+                    }).catch(app.onAppReady);
+                },
+                onTouch: item => {
+                    if (item.getAttribute('state')=='off') app.lights[item.id].turnOn().then(_ => item.setAttribute('state','on'));
+                    else if (item.getAttribute('state')=='on') app.lights[item.id].turnOff().then(_ => item.setAttribute('state','off'));
+                },
+                onPause: _ => {}
+            };
+            if (navigator.userAgent.endsWith("ARBrowser")) app.initialize();
+            else location = "https://itunes.apple.com/us/app/ar-browser-lab11/id1453746316";
+        </script>
+    </body>
+</html>
