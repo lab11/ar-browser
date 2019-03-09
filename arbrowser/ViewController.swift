@@ -24,6 +24,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     var anchors = [String:ARAnchor]()
     var urls = [ARAnchor:String]()
     var gradient = CAGradientLayer()
+    var scrollGradient = CAGradientLayer()
     var cdvController: CDVViewController?
     var webView: WKWebView!
     var hitNode = SCNNode()
@@ -53,6 +54,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         // Set initial state of webview
         container.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width:view.frame.width, height: UIScreen.main.bounds.height - navBar.frame.maxY)
         if let wv = cdvController?.webView as? WKWebView {
+            scrollGradient.frame = wv.bounds
+            scrollGradient.colors = [UIColor.black.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
+            scrollGradient.locations = [0, 0.02, 0.98, 1]
+            wv.layer.mask = scrollGradient
             wv.scrollView.backgroundColor = .clear
             wv.scrollView.delegate = self
             wv.isOpaque = false
@@ -179,6 +184,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(_ sv: UIScrollView) {
+        let topOpacity = UIColor(white: 0, alpha: (sv.frame.size.height >= sv.contentSize.height || sv.contentOffset.y <= 0) ? 1 : 0)
+        let bottomOpacity = UIColor(white: 0, alpha: (sv.frame.size.height >= sv.contentSize.height || sv.contentOffset.y + sv.frame.size.height >= sv.contentSize.height) ? 1 : 0)
+        scrollGradient.colors = [topOpacity.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, bottomOpacity.cgColor]
+        webView.layer.mask = scrollGradient
         guard open else {return}
         if sv.contentOffset.y < -64 {
             if !canExit {
