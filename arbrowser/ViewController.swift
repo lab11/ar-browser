@@ -17,21 +17,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet var container: UIView!
     @IBOutlet var navBar: UILabel!
-    @IBOutlet var pressGesture: UILongPressGestureRecognizer!
     @IBOutlet var crossHair: UILabel!
     
     var qrRequests = [VNRequest]()
     var anchors = [String:ARAnchor]()
     var urls = [ARAnchor:String]()
-    var gradient = CAGradientLayer()
-    var scrollGradient = CAGradientLayer()
+    var gradient = CAGradientLayer(), scrollGradient = CAGradientLayer()
     var cdvController: CDVViewController?
+    var processing : ARFrame?
     var webView: WKWebView!
     var hitNode = SCNNode()
     var hitUrl = ""
-    var processing : ARFrame?
-    var open = false
-    var canExit = false
+    var isOpen = false, canExit = false, canReact = false, canPress = false
     var homeUrl : URL?
     var visionQueue = DispatchQueue(label: Bundle.main.infoDictionary![kCFBundleIdentifierKey as String] as! String + ".serialVisionQueue")
 
@@ -94,7 +91,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             for result in results {
                 if result.confidence == 1, let payload = result.payloadStringValue, payload.starts(with: "http"), let frame = self.processing /*, anchors[payload] == nil*/ {
                     let rect = result.boundingBox.applying(CGAffineTransform(scaleX: 1, y: -1)).applying(CGAffineTransform(translationX: 0, y: 1))
-                    if self.pressGesture.isEnabled == false {
+                    if !canPress {
                         DispatchQueue.main.async { self.navBar.text = "QR Detected. Loading..." }
                     }
 //                    DispatchQueue.global(qos: .background).async {
@@ -136,8 +133,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         let node = SCNNode(geometry: shape)
         node.transform = SCNMatrix4(anchor.transform)
         node.geometry!.firstMaterial?.isDoubleSided = true
-        if self.pressGesture.isEnabled == false {
-            self.pressGesture.isEnabled = true
+        if !canPress {
+            canPress = true
             DispatchQueue.main.async { self.navBar.text = "" }
         }
         DispatchQueue.global(qos:.background).async {
@@ -152,8 +149,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     // MARK: - ARSessionDelegate
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        if self.open, !canExit { DispatchQueue.main.async { self.navBar.text = self.webView.title } }
-        if self.processing != nil || self.open { return }
+        if self.isOpen, !canExit, !canReact {
+            DispatchQueue.main.async {
+                if let title = self.webView.title {
+                    self.navBar.text = title
+                } else {
+                    self.navBar.text = self.webView.url?.absoluteString
+                }
+            }
+        }
+        if self.processing != nil || self.isOpen { return }
         self.processing = frame
         visionQueue.async {
             do {
@@ -165,13 +170,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         }
     }
     
-    
-    // MARK: - ARSessionObserver
-    
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         DispatchQueue.main.async { self.navBar.text = "Scan a QR Code" }
-        pressGesture.isEnabled = false
+        canPress = false
         sceneView.scene.rootNode.enumerateChildNodes { (node, stop) in node.removeFromParentNode() }
         anchors = [String:ARAnchor]()
         urls = [ARAnchor:String]()
@@ -184,20 +186,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(_ sv: UIScrollView) {
-        let topOpacity = UIColor(white: 0, alpha: (sv.frame.size.height >= sv.contentSize.height || sv.contentOffset.y <= 0) ? 1 : 0)
-        let bottomOpacity = UIColor(white: 0, alpha: (sv.frame.size.height >= sv.contentSize.height || sv.contentOffset.y + sv.frame.size.height >= sv.contentSize.height) ? 1 : 0)
+        guard isOpen else {return}
+        let topOpacity = UIColor(white: 0, alpha: (sv.contentOffset.y <= 0) ? 1 : 0)
+        let bottomOpacity = UIColor(white: 0, alpha: (sv.contentOffset.y + sv.frame.size.height >= sv.contentSize.height) ? 1 : 0)
         scrollGradient.colors = [topOpacity.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, bottomOpacity.cgColor]
         webView.layer.mask = scrollGradient
-        guard open else {return}
         if sv.contentOffset.y < -64 {
             if !canExit {
-                hitUrl = navBar.text!
                 navBar.text = "❌"
                 UIImpactFeedbackGenerator(style:.heavy).impactOccurred()
                 canExit = true
             }
         } else if canExit {
-            navBar.text = hitUrl
             UIImpactFeedbackGenerator(style:.light).impactOccurred()
             canExit = false
         }
@@ -217,7 +217,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     // MARK: - User Event Actions
     
     @IBAction func openWebView() {
-        self.open = true
+        self.isOpen = true
         CATransaction.setAnimationDuration(1)
         UIView.animate(withDuration: 0.5, animations: {
             self.webView.alpha = 0.9
@@ -228,7 +228,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     }
     
     @IBAction func closeWebView() {
-        guard open else { return }
         CATransaction.setAnimationDuration(1)
         UIView.animate(withDuration: 0.5, animations: {
             self.webView.alpha = 0.0
@@ -240,12 +239,33 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             self.webView.evaluateJavaScript("ble.stopScan(); Lifx.destroy()")
             self.webView.loadFileURL(self.homeUrl!, allowingReadAccessTo: self.homeUrl!.deletingPathExtension())
         }
-        self.navBar.text = ""
-        self.open = false
-        self.canExit = false
+        navBar.text = ""
+        isOpen = false
+        canExit = false
+    }
+    
+    @IBAction func navTap(_ gesture: UILongPressGestureRecognizer) {
+        guard isOpen else { return }
+        if gesture.state == .began || gesture.state == .changed, gesture.location(in: gesture.view).y < 44 {
+            canReact = true
+            if webView.scrollView.contentOffset.y > 0 {
+                navBar.text = "🔺"
+            } else {
+                navBar.text = "❌"
+            }
+            return
+        } else if gesture.state == .ended {
+            if navBar.text == "🔺" {
+                webView.scrollView.setContentOffset(.zero, animated: true)
+            } else if navBar.text == "❌" {
+                closeWebView()
+            }
+        }
+        canReact = false
     }
     
     @IBAction func sceneTap(_ gesture: UILongPressGestureRecognizer) {
+        guard canPress else { return }
         if gesture.state == .began {
             if let result = sceneView.hitTest(gesture.location(in: sceneView), options: [.boundingBoxOnly: true]).first {
                 hitNode = result.node

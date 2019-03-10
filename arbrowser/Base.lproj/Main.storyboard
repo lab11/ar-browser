@@ -92,7 +92,7 @@
                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <size key="shadowOffset" width="1" height="1"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="tCg-F1-bi9" appends="YES" id="7Tg-ba-eGt"/>
+                                    <outletCollection property="gestureRecognizers" destination="OdH-qf-jH8" appends="YES" id="nkb-DA-vKW"/>
                                 </connections>
                             </label>
                         </subviews>
@@ -116,19 +116,18 @@
                         <outlet property="container" destination="TYu-O4-5kN" id="HDQ-cJ-NvC"/>
                         <outlet property="crossHair" destination="IdB-Qs-vfe" id="oEx-af-3Gh"/>
                         <outlet property="navBar" destination="SuS-G2-7Yb" id="fxr-Wp-oVJ"/>
-                        <outlet property="pressGesture" destination="Qi4-Uh-xW0" id="Ggf-FP-KRa"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="tCg-F1-bi9">
-                    <connections>
-                        <action selector="closeWebView" destination="BV1-FR-VrT" id="lE9-bE-H1C"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <pongPressGestureRecognizer enabled="NO" allowableMovement="10" minimumPressDuration="0.0" id="Qi4-Uh-xW0">
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="Qi4-Uh-xW0">
                     <connections>
                         <action selector="sceneTap:" destination="BV1-FR-VrT" id="IfE-dA-mG2"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="44" minimumPressDuration="0.0" id="OdH-qf-jH8">
+                    <connections>
+                        <action selector="navTap:" destination="BV1-FR-VrT" id="2x7-SN-q3J"/>
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
