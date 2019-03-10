@@ -13,7 +13,8 @@ AR Browser discovers URLs associated with objects in a users physical space. To 
 Website Access
 --------------
 
-Like common web browsers, data made available via W3C standards for HTML, CSS, & JavaScript are accessible to opened websites. Additionally, some web pages may request access to the device's Bluetooth radios. This is not currently supported.
+Like common web browsers, data made available via W3C standards for HTML, CSS, & JavaScript are accessible to opened websites. Additionally, some web pages may request access to the device's Bluetooth radio or inspect the local Wi-Fi network in order to discover and connect with associated objects.
+
 
 
 Cached Data
