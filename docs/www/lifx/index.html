@@ -33,8 +33,9 @@
                 onAppReady: _ => {
                     Lifx.discover({wait:250}).then(devices => {
                         devices.forEach(device => {
-                            if (app.hash && device.mac != app.hash) return;
                             if (!app.lights[device.mac]) {
+                                app.lights[device.mac] = device;
+                                if (app.hash && device.mac != app.hash) return;
                                 var locat = device.deviceInfo.location.label.toUpperCase();
                                 var group = device.deviceInfo.group;
                                 if ($('title').innerHTML != locat) {
@@ -44,7 +45,6 @@
                                         $('title').style.color = '#fff';
                                     },500);
                                 }
-                                app.lights[device.mac] = device;
                                 if (!$(group.guid)) $('title').insertAdjacentHTML('afterend','<div class="group" id="'+group.guid+'" state="dis" onclick="">'+group.label+'</div>');
                                 if (!$(device.mac)) $(group.guid).insertAdjacentHTML('beforeend','<div class="item" id="'+device.mac+'" state="dis" onclick="app.onTouch(this)"><img src="light.svg"/>'+device.deviceInfo.label+'</div>');
                                 setTimeout(_ => $(group.guid).setAttribute('state',''),10);
