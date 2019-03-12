@@ -13,6 +13,7 @@
             [state=off] img, [state=dis] img {filter: grayscale(100%)}
             [state=dis] {opacity:0; line-height:0; margin:0}
             #title {background:#205e; color:#fff}
+            #buttons .item {margin:10px}
         </style>
         </head>
     <body>
@@ -26,16 +27,16 @@
                     document.addEventListener('deviceready', app.onAppReady, false);
                     document.addEventListener('pause', unload = app.onPause, false);
                     document.addEventListener('resume', app.onAppReady, false);
+                    if (location.hash.length == 13) app.hash = location.hash.substr(1).match(/.{2}/g).join(':').toUpperCase()
                     app.lights = {};
                 },
                 onAppReady: _ => {
                     Lifx.discover({wait:250}).then(devices => {
-                        console.log("discover")
                         devices.forEach(device => {
+                            if (app.hash && device.mac != app.hash) return;
                             if (!app.lights[device.mac]) {
                                 var locat = device.deviceInfo.location.label.toUpperCase();
                                 var group = device.deviceInfo.group;
-                                app.lights[device.mac] = device;
                                 if ($('title').innerHTML != locat) {
                                     $('title').style.color = '#fff0';
                                     setTimeout(_ => {
@@ -43,9 +44,17 @@
                                         $('title').style.color = '#fff';
                                     },500);
                                 }
+                                app.lights[device.mac] = device;
                                 if (!$(group.guid)) $('title').insertAdjacentHTML('afterend','<div class="group" id="'+group.guid+'" state="dis" onclick="">'+group.label+'</div>');
                                 if (!$(device.mac)) $(group.guid).insertAdjacentHTML('beforeend','<div class="item" id="'+device.mac+'" state="dis" onclick="app.onTouch(this)"><img src="light.svg"/>'+device.deviceInfo.label+'</div>');
                                 setTimeout(_ => $(group.guid).setAttribute('state',''),10);
+                                if (app.hash) {
+                                    $(group.guid).insertAdjacentHTML('afterend','<div class="group" id="buttons" state="dis" onclick=""></div>')
+                                    $('buttons').insertAdjacentHTML('beforeend','<div class="item" id="'+group.guid+'-on" state="les" onclick="app.onTouch(this)">Turn Group On</div>');
+                                    $('buttons').insertAdjacentHTML('beforeend','<div class="item" id="'+group.guid+'-off" state="les" onclick="app.onTouch(this)">Turn Group Off</div>');
+                                    $('buttons').insertAdjacentHTML('beforeend','<div class="item" state="les" onclick="location = location.pathname">View All Lights</div>');
+                                    setTimeout(_ => $('buttons').setAttribute('state',''),10);
+                                }
                             }
                             var getState = _ => device.getLightState().then(state => $(device.mac).setAttribute('state',state.power?'on':'off')).catch(getState);
                             // $(device.mac).style.filter = 'hue-rotate(' + state.color.hue + 'turn) saturate(' + state.color.saturation + ')';
@@ -57,6 +66,10 @@
                 onTouch: item => {
                     if (item.getAttribute('state')=='off') app.lights[item.id].turnOn().then(_ => item.setAttribute('state','on'));
                     else if (item.getAttribute('state')=='on') app.lights[item.id].turnOff().then(_ => item.setAttribute('state','off'));
+                    else if (item.getAttribute('state')=='les' && item.id) {
+                        var [group,state] = item.id.split('-');
+                        Object.values(app.lights).filter(d => d.deviceInfo.group.guid == group).forEach(d => state == 'on' ? d.turnOn() : d.turnOff())
+                    }
                 },
                 onPause: _ => {}
             };
