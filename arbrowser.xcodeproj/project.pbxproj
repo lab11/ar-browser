@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E9371E1C22247D7600A1CED2 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9371E1722247D3400A1CED2 /* libCordova.a */; };
 		E9575B9E2224512D00618F10 /* www in Resources */ = {isa = PBXBuildFile; fileRef = E9575B9D2224512C00618F10 /* www */; };
 		E9575BBC22245BC400618F10 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BB822245B1B00618F10 /* CoreBluetooth.framework */; };
 		E9575BBE22245C8900618F10 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BBD22245C8800618F10 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E97AEBD12241B1F200E6C99E /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E97AEBC92241AFEB00E6C99E /* libCordova.a */; };
 		E99062C3221B551E00F0063F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99062C2221B551E00F0063F /* AppDelegate.swift */; };
 		E99062C7221B551E00F0063F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99062C6221B551E00F0063F /* ViewController.swift */; };
 		E99062CA221B551E00F0063F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E99062C8221B551E00F0063F /* Main.storyboard */; };
@@ -30,23 +30,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		E9371E1622247D3400A1CED2 /* PBXContainerItemProxy */ = {
+		E97AEBC82241AFEB00E6C99E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */;
+			containerPortal = E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 68A32D7114102E1C006B237C;
 			remoteInfo = CordovaLib;
 		};
-		E9371E1822247D3400A1CED2 /* PBXContainerItemProxy */ = {
+		E97AEBCA2241AFEB00E6C99E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */;
+			containerPortal = E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C0C01EB21E3911D50056E6CB;
 			remoteInfo = Cordova;
 		};
-		E9371E1A22247D6600A1CED2 /* PBXContainerItemProxy */ = {
+		E97AEBCC2241B09A00E6C99E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */;
+			containerPortal = E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = CordovaLib;
@@ -74,6 +74,7 @@
 		E9575B9D2224512C00618F10 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		E9575BB822245B1B00618F10 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		E9575BBD22245C8800618F10 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		E99062BF221B551E00F0063F /* arbrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = arbrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E99062C2221B551E00F0063F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E99062C6221B551E00F0063F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -83,7 +84,6 @@
 		E99062D0221B551F00F0063F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E99062E0221C732E00F0063F /* arbrowser-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "arbrowser-Bridging-Header.h"; sourceTree = "<group>"; };
 		E99062E5221C783F00F0063F /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
-		E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		E99EE73422247CD400492B84 /* libCordova.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCordova.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9FCCC6A223082980074EC5F /* CBPeripheral+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBPeripheral+Extensions.m"; sourceTree = "<group>"; };
 		E9FCCC6B223082980074EC5F /* BLECommandContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLECommandContext.m; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9371E1C22247D7600A1CED2 /* libCordova.a in Frameworks */,
+				E97AEBD12241B1F200E6C99E /* libCordova.a in Frameworks */,
 				E9575BBC22245BC400618F10 /* CoreBluetooth.framework in Frameworks */,
 				E9575BBE22245C8900618F10 /* WebKit.framework in Frameworks */,
 			);
@@ -119,15 +119,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E9371E1222247D3400A1CED2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E9371E1722247D3400A1CED2 /* libCordova.a */,
-				E9371E1922247D3400A1CED2 /* Cordova.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		E9575B8D2224203D00618F10 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,10 +133,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E97AEBC32241AFEB00E6C99E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E97AEBC92241AFEB00E6C99E /* libCordova.a */,
+				E97AEBCB2241AFEB00E6C99E /* Cordova.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E99062B6221B551E00F0063F = {
 			isa = PBXGroup;
 			children = (
-				E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */,
 				E99062C1221B551E00F0063F /* arbrowser */,
 				E99062C0221B551E00F0063F /* Products */,
 				E9575B8D2224203D00618F10 /* Frameworks */,
@@ -165,14 +164,15 @@
 			children = (
 				E99062C2221B551E00F0063F /* AppDelegate.swift */,
 				E99062C6221B551E00F0063F /* ViewController.swift */,
-				E99062E5221C783F00F0063F /* config.xml */,
-				E9FCCC67223082980074EC5F /* Plugins */,
 				E99062C8221B551E00F0063F /* Main.storyboard */,
 				E99062CD221B551F00F0063F /* LaunchScreen.storyboard */,
-				E99062CB221B551F00F0063F /* Assets.xcassets */,
-				E99062D0221B551F00F0063F /* Info.plist */,
 				E99062E0221C732E00F0063F /* arbrowser-Bridging-Header.h */,
+				E99062E5221C783F00F0063F /* config.xml */,
+				E99062D0221B551F00F0063F /* Info.plist */,
+				E9FCCC67223082980074EC5F /* Plugins */,
 				E9575B9D2224512C00618F10 /* www */,
+				E99062CB221B551F00F0063F /* Assets.xcassets */,
+				E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */,
 			);
 			path = arbrowser;
 			sourceTree = "<group>";
@@ -257,7 +257,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				E9371E1B22247D6600A1CED2 /* PBXTargetDependency */,
+				E97AEBCD2241B09A00E6C99E /* PBXTargetDependency */,
 			);
 			name = arbrowser;
 			productName = arbrowser;
@@ -293,8 +293,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = E9371E1222247D3400A1CED2 /* Products */;
-					ProjectRef = E99EE72B22247C0C00492B84 /* CordovaLib.xcodeproj */;
+					ProductGroup = E97AEBC32241AFEB00E6C99E /* Products */;
+					ProjectRef = E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -305,18 +305,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		E9371E1722247D3400A1CED2 /* libCordova.a */ = {
+		E97AEBC92241AFEB00E6C99E /* libCordova.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libCordova.a;
-			remoteRef = E9371E1622247D3400A1CED2 /* PBXContainerItemProxy */;
+			remoteRef = E97AEBC82241AFEB00E6C99E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		E9371E1922247D3400A1CED2 /* Cordova.framework */ = {
+		E97AEBCB2241AFEB00E6C99E /* Cordova.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Cordova.framework;
-			remoteRef = E9371E1822247D3400A1CED2 /* PBXContainerItemProxy */;
+			remoteRef = E97AEBCA2241AFEB00E6C99E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -359,10 +359,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		E9371E1B22247D6600A1CED2 /* PBXTargetDependency */ = {
+		E97AEBCD2241B09A00E6C99E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = CordovaLib;
-			targetProxy = E9371E1A22247D6600A1CED2 /* PBXContainerItemProxy */;
+			targetProxy = E97AEBCC2241B09A00E6C99E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

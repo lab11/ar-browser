@@ -30,7 +30,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     var hitUrl = ""
     var isOpen = false, canExit = false, canReact = false, canPress = false
     var homeUrl : URL?
-    var visionQueue = DispatchQueue(label: Bundle.main.infoDictionary![kCFBundleIdentifierKey as String] as! String + ".serialVisionQueue")
+    var queue = DispatchQueue(label: Bundle.main.infoDictionary![kCFBundleIdentifierKey as String] as! String + ".visionQueue")
+//    var slp = SwiftLinkPreview()
 
     
     // MARK: - UIViewController
@@ -138,7 +139,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             DispatchQueue.main.async { self.navBar.text = "" }
         }
         DispatchQueue.global(qos:.background).async {
-            if let s = self.urls[anchor], let url = URL(string: (s.starts(with: "https://lab11.github") ? s + "/favicon.png" : "https://www.google.com/s2/favicons?domain=" + s)), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+            if let s = self.urls[anchor], let url = URL(string: (s.starts(with: "https://lab11.github") ? s.split(separator: "#")[0] + "/favicon.png" : "https://www.google.com/s2/favicons?domain=" + s)), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                 node.geometry!.firstMaterial?.diffuse.contents = image
             }
         }
@@ -160,7 +161,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         }
         if self.processing != nil || self.isOpen { return }
         self.processing = frame
-        visionQueue.async {
+        queue.async {
             do {
                 // Create a request handler using the captured image from the ARFrame
                 let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, options: [:])
@@ -236,7 +237,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             self.gradient.colors = [UIColor(white: 0, alpha: 0.3).cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor]
         })
         DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-            self.webView.evaluateJavaScript("ble.stopScan(); Lifx.destroy()")
+            self.webView.evaluateJavaScript("ble.stopScan();")
             self.webView.loadFileURL(self.homeUrl!, allowingReadAccessTo: self.homeUrl!.deletingPathExtension())
         }
         navBar.text = ""
