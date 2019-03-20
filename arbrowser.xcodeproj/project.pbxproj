@@ -11,6 +11,14 @@
 		E9575BBC22245BC400618F10 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BB822245B1B00618F10 /* CoreBluetooth.framework */; };
 		E9575BBE22245C8900618F10 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BBD22245C8800618F10 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E97AEBD12241B1F200E6C99E /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E97AEBC92241AFEB00E6C99E /* libCordova.a */; };
+		E97AEBDB2241B48A00E6C99E /* SwiftLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD32241B48A00E6C99E /* SwiftLinkPreview.swift */; };
+		E97AEBDC2241B48A00E6C99E /* NSURLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD42241B48A00E6C99E /* NSURLSessionExtension.swift */; };
+		E97AEBDD2241B48A00E6C99E /* ResponseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD52241B48A00E6C99E /* ResponseExtension.swift */; };
+		E97AEBDE2241B48A00E6C99E /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD62241B48A00E6C99E /* Response.swift */; };
+		E97AEBDF2241B48A00E6C99E /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD72241B48A00E6C99E /* Regex.swift */; };
+		E97AEBE02241B48A00E6C99E /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD82241B48A00E6C99E /* Cache.swift */; };
+		E97AEBE12241B48A00E6C99E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD92241B48A00E6C99E /* StringExtension.swift */; };
+		E97AEBE22241B48A00E6C99E /* PreviewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBDA2241B48A00E6C99E /* PreviewError.swift */; };
 		E99062C3221B551E00F0063F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99062C2221B551E00F0063F /* AppDelegate.swift */; };
 		E99062C7221B551E00F0063F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99062C6221B551E00F0063F /* ViewController.swift */; };
 		E99062CA221B551E00F0063F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E99062C8221B551E00F0063F /* Main.storyboard */; };
@@ -75,6 +83,14 @@
 		E9575BB822245B1B00618F10 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		E9575BBD22245C8800618F10 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
+		E97AEBD32241B48A00E6C99E /* SwiftLinkPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreview.swift; sourceTree = "<group>"; };
+		E97AEBD42241B48A00E6C99E /* NSURLSessionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLSessionExtension.swift; sourceTree = "<group>"; };
+		E97AEBD52241B48A00E6C99E /* ResponseExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseExtension.swift; sourceTree = "<group>"; };
+		E97AEBD62241B48A00E6C99E /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		E97AEBD72241B48A00E6C99E /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		E97AEBD82241B48A00E6C99E /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		E97AEBD92241B48A00E6C99E /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		E97AEBDA2241B48A00E6C99E /* PreviewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewError.swift; sourceTree = "<group>"; };
 		E99062BF221B551E00F0063F /* arbrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = arbrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E99062C2221B551E00F0063F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E99062C6221B551E00F0063F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +158,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		E97AEBD22241B48A00E6C99E /* SwiftLinkPreview */ = {
+			isa = PBXGroup;
+			children = (
+				E97AEBD32241B48A00E6C99E /* SwiftLinkPreview.swift */,
+				E97AEBD42241B48A00E6C99E /* NSURLSessionExtension.swift */,
+				E97AEBD52241B48A00E6C99E /* ResponseExtension.swift */,
+				E97AEBD62241B48A00E6C99E /* Response.swift */,
+				E97AEBD72241B48A00E6C99E /* Regex.swift */,
+				E97AEBD82241B48A00E6C99E /* Cache.swift */,
+				E97AEBD92241B48A00E6C99E /* StringExtension.swift */,
+				E97AEBDA2241B48A00E6C99E /* PreviewError.swift */,
+			);
+			path = SwiftLinkPreview;
+			sourceTree = "<group>";
+		};
 		E99062B6221B551E00F0063F = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +211,7 @@
 		E9FCCC67223082980074EC5F /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				E97AEBD22241B48A00E6C99E /* SwiftLinkPreview */,
 				E9FCCC68223082980074EC5F /* cordova-plugin-ble-central */,
 				E9FCCC70223082980074EC5F /* README */,
 				E9FCCC71223082980074EC5F /* cordova-plugin-chrome-apps-iossocketscommon */,
@@ -343,15 +375,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9FCCC85223082980074EC5F /* ChromeSocketsUdp.m in Sources */,
+				E97AEBDF2241B48A00E6C99E /* Regex.swift in Sources */,
 				E99062C7221B551E00F0063F /* ViewController.swift in Sources */,
+				E97AEBDB2241B48A00E6C99E /* SwiftLinkPreview.swift in Sources */,
+				E97AEBE02241B48A00E6C99E /* Cache.swift in Sources */,
 				E9FCCC80223082980074EC5F /* BLECommandContext.m in Sources */,
+				E97AEBDE2241B48A00E6C99E /* Response.swift in Sources */,
 				E9FCCC86223082980074EC5F /* CDVWKWebViewEngine.m in Sources */,
 				E9FCCC87223082980074EC5F /* CDVWKWebViewUIDelegate.m in Sources */,
+				E97AEBDC2241B48A00E6C99E /* NSURLSessionExtension.swift in Sources */,
+				E97AEBE22241B48A00E6C99E /* PreviewError.swift in Sources */,
 				E9FCCC81223082980074EC5F /* BLECentralPlugin.m in Sources */,
 				E9FCCC88223082980074EC5F /* CDVWKProcessPoolFactory.m in Sources */,
 				E99062C3221B551E00F0063F /* AppDelegate.swift in Sources */,
 				E9FCCC83223082980074EC5F /* GCDAsyncUdpSocket.m in Sources */,
+				E97AEBE12241B48A00E6C99E /* StringExtension.swift in Sources */,
 				E9FCCC84223082980074EC5F /* GCDAsyncSocket.m in Sources */,
+				E97AEBDD2241B48A00E6C99E /* ResponseExtension.swift in Sources */,
 				E9FCCC7F223082980074EC5F /* CBPeripheral+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

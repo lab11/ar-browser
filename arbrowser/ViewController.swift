@@ -31,7 +31,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     var isOpen = false, canExit = false, canReact = false, canPress = false
     var homeUrl : URL?
     var queue = DispatchQueue(label: Bundle.main.infoDictionary![kCFBundleIdentifierKey as String] as! String + ".visionQueue")
-//    var slp = SwiftLinkPreview()
+    var slp = SwiftLinkPreview(session: URLSession.shared, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue.main, cache: InMemoryCache())
 
     
     // MARK: - UIViewController
@@ -95,18 +95,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
                     if !canPress {
                         DispatchQueue.main.async { self.navBar.text = "QR Detected. Loading..." }
                     }
-//                    DispatchQueue.global(qos: .background).async {
-//                        if let url = URL(string: payload) {
-//                            URLSession.shared.dataTask(with: URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData , timeoutInterval: 60)).resume()
-//                        }
-//                    }
                     DispatchQueue.main.async {
-//                        let url = URL(string:payload)
-//                        URLRequest(url: url!)
                         if let hitTestResult = frame.hitTest(CGPoint(x: rect.midX, y: rect.midY), types: [.featurePoint]).first {
                             if let anchor = self.anchors[payload] {
                                 if let node = self.sceneView.node(for: anchor) {
-                                    node.transform = SCNMatrix4(node.simdTransform*0.8 + hitTestResult.worldTransform*0.2)
+                                    node.transform = SCNMatrix4(node.simdTransform*0.5 + hitTestResult.worldTransform*0.5)
                                 }
                             } else {
                                 // Create an anchor. The node will be created in delegate methods
@@ -139,8 +132,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             DispatchQueue.main.async { self.navBar.text = "" }
         }
         DispatchQueue.global(qos:.background).async {
-            if let s = self.urls[anchor], let url = URL(string: (s.starts(with: "https://lab11.github") ? s.split(separator: "#")[0] + "/favicon.png" : "https://www.google.com/s2/favicons?domain=" + s)), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-                node.geometry!.firstMaterial?.diffuse.contents = image
+            if let s = self.urls[anchor] {
+                self.slp.preview(s, onSuccess: { result in
+                    if result.icon != nil, let data = try? Data(contentsOf: result.icon!.starts(with:"http") ? URL(string:result.icon!)! : result.finalUrl!.appendingPathComponent(result.icon!)), let image = UIImage(data: data) {
+                        node.geometry!.firstMaterial?.diffuse.contents = image
+                    }
+                }, onError: { error in })
             }
         }
         return node
