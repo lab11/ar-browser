@@ -133,6 +133,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         }
         DispatchQueue.global(qos:.background).async {
             if let s = self.urls[anchor] {
+                if let url = URL(string:"https://www.google.com/s2/favicons?domain=" + s), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                    node.geometry!.firstMaterial?.diffuse.contents = image
+                }
                 self.slp.preview(s, onSuccess: { result in
                     if result.icon != nil, let data = try? Data(contentsOf: result.icon!.starts(with:"http") ? URL(string:result.icon!)! : result.finalUrl!.appendingPathComponent(result.icon!)), let image = UIImage(data: data) {
                         node.geometry!.firstMaterial?.diffuse.contents = image
