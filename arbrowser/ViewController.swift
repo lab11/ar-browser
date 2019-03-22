@@ -13,26 +13,28 @@ import WebKit
 import SceneKit
 
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UIScrollViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet var container: UIView!
-    @IBOutlet var navBar: UILabel!
     @IBOutlet var crossHair: UILabel!
+    @IBOutlet var navBar: UILabel!
+    @IBOutlet var navTitle: UILabel!
+    @IBOutlet var navUrl: UILabel!
+    @IBOutlet var navAction: UILabel!
+    @IBOutlet var navIcon: UIImageView!
     
     var qrRequests = [VNRequest]()
-    var anchors = [String:ARAnchor]()
     var urls = [ARAnchor:String]()
     var gradient = CAGradientLayer(), scrollGradient = CAGradientLayer()
+    var hitNode = SCNNode()
     var cdvController: CDVViewController?
     var processing : ARFrame?
-    var webView: WKWebView!
-    var hitNode = SCNNode()
-    var hitUrl = ""
-    var isOpen = false, canExit = false, canReact = false, canPress = false
     var homeUrl : URL?
+    var webView: WKWebView!
+    var isOpen = false, canExit = false, canReact = false, canPress = false
     var queue = DispatchQueue(label: Bundle.main.infoDictionary![kCFBundleIdentifierKey as String] as! String + ".visionQueue")
     var slp = SwiftLinkPreview(session: URLSession.shared, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue.main, cache: InMemoryCache())
-
+    
     
     // MARK: - UIViewController
     
@@ -43,7 +45,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         sceneView.delegate = self
         sceneView.session.delegate = self
         sceneView.autoenablesDefaultLighting = true
-
+        
         // Add gradient background for header
         gradient.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 2 * (navBar.frame.height + UIApplication.shared.statusBarFrame.height))
         gradient.colors = [UIColor(white: 0, alpha: 0.3).cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor]
@@ -63,7 +65,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             homeUrl = wv.url
             webView = wv
         }
-
+        
         // Create QR Detection Request
         let request = VNDetectBarcodesRequest(completionHandler: requestHandler)
         request.symbologies = [.QR]
@@ -90,21 +92,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     func requestHandler(request: VNRequest, error: Error?) {
         if let results = request.results as? [VNBarcodeObservation] {
             for result in results {
-                if result.confidence == 1, let payload = result.payloadStringValue, payload.starts(with: "http"), let frame = self.processing /*, anchors[payload] == nil*/ {
+                if result.confidence == 1, let payload = result.payloadStringValue, payload.starts(with: "http"), let frame = self.processing {
                     let rect = result.boundingBox.applying(CGAffineTransform(scaleX: 1, y: -1)).applying(CGAffineTransform(translationX: 0, y: 1))
-                    if !canPress {
-                        DispatchQueue.main.async { self.navBar.text = "QR Detected. Loading..." }
-                    }
+                    if !canPress { DispatchQueue.main.async { self.navBar.text = "QR Detected. Loading..." } }
                     DispatchQueue.main.async {
                         if let hitTestResult = frame.hitTest(CGPoint(x: rect.midX, y: rect.midY), types: [.featurePoint]).first {
-                            if let anchor = self.anchors[payload] {
-                                if let node = self.sceneView.node(for: anchor) {
-                                    node.transform = SCNMatrix4(node.simdTransform*0.5 + hitTestResult.worldTransform*0.5)
-                                }
+                            if let node = self.sceneView.scene.rootNode.childNode(withName: payload, recursively: true) {
+                                node.transform = SCNMatrix4(node.simdTransform*0.5 + hitTestResult.worldTransform*0.5)
                             } else {
                                 // Create an anchor. The node will be created in delegate methods
                                 let anchor = ARAnchor(transform: hitTestResult.worldTransform)
-                                self.anchors[payload] = anchor
                                 self.urls[anchor] = payload
                                 self.sceneView.session.add(anchor: anchor)
                             }
@@ -120,7 +117,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     
     
     // MARK: - ARSCNViewDelegate
-
+    
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         // Create and configure nodes for anchors added to the view's session.
         let shape = SCNBox(width: 0.025, height: 0.025, length: 0.025, chamferRadius: 0.0)
@@ -133,6 +130,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         }
         DispatchQueue.global(qos:.background).async {
             if let s = self.urls[anchor] {
+                node.name = s
                 if let url = URL(string:"https://www.google.com/s2/favicons?domain=" + s), let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                     node.geometry!.firstMaterial?.diffuse.contents = image
                 }
@@ -140,35 +138,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
                     if result.icon != nil, let data = try? Data(contentsOf: result.icon!.starts(with:"http") ? URL(string:result.icon!)! : result.finalUrl!.appendingPathComponent(result.icon!)), let image = UIImage(data: data) {
                         node.geometry!.firstMaterial?.diffuse.contents = image
                     }
+                    if let final = result.finalUrl?.absoluteString, let title = result.title {
+                        node.setValue(final, forKey: "url")
+                        node.setValue(title, forKey: "title")
+                    }
                 }, onError: { error in })
             }
         }
         return node
     }
-
+    
     
     // MARK: - ARSessionDelegate
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if self.isOpen, !canExit, !canReact {
             DispatchQueue.main.async {
-                if let title = self.webView.title {
-                    self.navBar.text = title
-                } else {
-                    self.navBar.text = self.webView.url?.absoluteString
-                }
+                self.navTitle.text = self.webView.title ?? self.webView.url?.absoluteString
+                self.navUrl.text = self.webView.title != nil ? self.webView.url?.absoluteString : ""
+                self.navBar.text = ""
             }
         }
         if self.processing != nil || self.isOpen { return }
         self.processing = frame
-        queue.async {
-            do {
-                // Create a request handler using the captured image from the ARFrame
-                let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, options: [:])
-                // Process the request
-                try imageRequestHandler.perform(self.qrRequests)
-            } catch { }
-        }
+        queue.async { do { try VNImageRequestHandler(cvPixelBuffer: frame.capturedImage, options: [:]).perform(self.qrRequests) } catch { } }
     }
     
     func sessionInterruptionEnded(_ session: ARSession) {
@@ -176,10 +169,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         DispatchQueue.main.async { self.navBar.text = "Scan a QR Code" }
         canPress = false
         sceneView.scene.rootNode.enumerateChildNodes { (node, stop) in node.removeFromParentNode() }
-        anchors = [String:ARAnchor]()
         urls = [ARAnchor:String]()
         hitNode = SCNNode()
-        hitUrl = ""
         processing = nil
     }
     
@@ -195,6 +186,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         if sv.contentOffset.y < -64 {
             if !canExit {
                 navBar.text = "❌"
+                navTitle.text = ""
+                navUrl.text = ""
                 UIImpactFeedbackGenerator(style:.heavy).impactOccurred()
                 canExit = true
             }
@@ -205,13 +198,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         if sv.contentOffset.y < 0, sv.contentOffset.y > -65 {
             let k = 0.6 * (1 + sv.contentOffset.y / 64)
             gradient.colors = [UIColor(white: 0, alpha: 0.3 + k).cgColor, UIColor(white: 0, alpha: k).cgColor, UIColor.clear.cgColor]
+            navIcon.alpha = k * 5 / 3
         }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if canExit {
-            closeWebView()
-        }
+        if canExit { closeWebView() }
     }
     
     
@@ -241,26 +233,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             self.webView.loadFileURL(self.homeUrl!, allowingReadAccessTo: self.homeUrl!.deletingPathExtension())
         }
         navBar.text = ""
+        navTitle.text = ""
+        navUrl.text = ""
+        navIcon.image = nil
         isOpen = false
         canExit = false
     }
     
     @IBAction func navTap(_ gesture: UILongPressGestureRecognizer) {
         guard isOpen else { return }
+        navIcon.alpha = 1
         if gesture.state == .began || gesture.state == .changed, gesture.location(in: gesture.view).y < 44 {
             canReact = true
-            if webView.scrollView.contentOffset.y > 0 {
-                navBar.text = "🔺"
-            } else {
-                navBar.text = "❌"
-            }
+            navBar.text = webView.scrollView.contentOffset.y > 0 ? "🔺" : "❌"
+            navTitle.text = ""
+            navUrl.text = ""
+            navIcon.alpha = 0
             return
         } else if gesture.state == .ended {
-            if navBar.text == "🔺" {
-                webView.scrollView.setContentOffset(.zero, animated: true)
-            } else if navBar.text == "❌" {
-                closeWebView()
-            }
+            if navBar.text == "🔺" { webView.scrollView.setContentOffset(.zero, animated: true) }
+            else if navBar.text == "❌" { closeWebView() }
         }
         canReact = false
     }
@@ -271,27 +263,29 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             if let result = sceneView.hitTest(gesture.location(in: sceneView), options: [.boundingBoxOnly: true]).first {
                 hitNode = result.node
                 hitNode.opacity = 0.6
-                if let anchor = sceneView.anchor(for: hitNode), let s = urls[anchor], let url = URL(string: s) {
-                    hitUrl = s
+                if let s = hitNode.name, let url = URL(string: s) {
                     webView.backForwardList.perform(Selector(("_removeAllItems")))
                     webView.load(URLRequest(url: url))
-                    navBar.text = hitUrl
+                    navTitle.text = hitNode.value(forKey: "title") as? String ?? s
+                    navUrl.text = hitNode.value(forKey: "url") as? String ?? ""
+                    navIcon.image = hitNode.geometry!.firstMaterial?.diffuse.contents as? UIImage ?? nil
+                    navIcon.alpha = 1
                 }
             }
         } else if gesture.state == .changed {
             if let result = sceneView.hitTest(gesture.location(in: sceneView), options: [.boundingBoxOnly: true]).first, result.node == hitNode {
-                navBar.text = hitUrl
+                navTitle.text = hitNode.value(forKey: "title") as? String ?? hitNode.name
+                navUrl.text = hitNode.value(forKey: "url") as? String ?? ""
+                navIcon.image = hitNode.geometry!.firstMaterial?.diffuse.contents as? UIImage ?? nil
                 hitNode.opacity = 0.6
             } else {
-                navBar.text = ""
+                navTitle.text = ""
+                navUrl.text = ""
+                navIcon.image = nil
                 hitNode.opacity = 1
             }
         } else if gesture.state == .ended {
-            if hitNode.opacity < 1 {
-                openWebView()
-            } else {
-                navBar.text = ""
-            }
+            if hitNode.opacity < 1 { openWebView() }
             hitNode.opacity = 1
         }
     }
