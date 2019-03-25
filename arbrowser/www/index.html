@@ -4,8 +4,8 @@
         <style>
             body { background:#3338 }
             img { height:20vh; margin:-10vh; position:fixed; left:50%; top:50%;}
-            img { animation:spin; animation-duration:3s; animation-timing-function:ease-in-out; animation-iteration-count:infinite; }
-            @keyframes spin { 5% { transform:rotate(0deg) } 95% { transform:rotate(360deg) } 100% { transform:rotate(360deg) } }
+            img { animation:spin; animation-duration:5s; animation-timing-function:ease-in-out; animation-iteration-count:infinite; }
+            @keyframes spin { 0% { transform:rotate(0deg) scale(1) } 50% { transform:rotate(360deg) scale(.5) } 100% { transform:rotate(720deg) scale(1) } }
             #in { animation-direction:reverse }
         </style>
         <img src="img/inner.svg" id="in"/>
