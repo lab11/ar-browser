@@ -26,10 +26,11 @@
                                 <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.28999999999999998" colorSpace="calibratedRGB"/>
                                 <size key="shadowOffset" width="1" height="1"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan a QR Code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Z8-M3-zfm">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan a QR Code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dl1-9d-Kb3">
+                                <rect key="frame" x="0.0" y="28" width="375" height="18"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="Suy-e6-Ztj"/>
+                                    <constraint firstAttribute="height" constant="18" id="RLr-37-GK6"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="yVH-VO-SvA"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
@@ -39,10 +40,10 @@
                             </label>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="8Z8-M3-zfm" firstAttribute="top" secondItem="0Ph-Bw-IBA" secondAttribute="top" id="1WC-jx-AYH"/>
                             <constraint firstItem="2Be-GI-6U7" firstAttribute="centerY" secondItem="XhE-Jx-g21" secondAttribute="centerY" id="6e6-31-Eil"/>
-                            <constraint firstAttribute="trailing" secondItem="8Z8-M3-zfm" secondAttribute="trailing" id="bAb-G4-8lL"/>
-                            <constraint firstItem="8Z8-M3-zfm" firstAttribute="leading" secondItem="XhE-Jx-g21" secondAttribute="leading" id="gs5-Or-mmp"/>
+                            <constraint firstItem="Dl1-9d-Kb3" firstAttribute="leading" secondItem="XhE-Jx-g21" secondAttribute="leading" id="JxZ-K5-SBk"/>
+                            <constraint firstAttribute="trailing" secondItem="Dl1-9d-Kb3" secondAttribute="trailing" id="gQq-zh-QnV"/>
+                            <constraint firstItem="Dl1-9d-Kb3" firstAttribute="top" secondItem="0Ph-Bw-IBA" secondAttribute="top" constant="8" id="nU0-FS-cxD"/>
                             <constraint firstItem="2Be-GI-6U7" firstAttribute="centerX" secondItem="XhE-Jx-g21" secondAttribute="centerX" id="yUS-oV-cf8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="0Ph-Bw-IBA"/>
