@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Permamote</title>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: gap: * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+        <meta name="requests" content="ble, udp"/>
+        <link rel="shortcut icon" href="favicon.png"/>
+        <style>
+            body {text-align:center; color:#eee; font-family:sans-serif; text-shadow:.2vh .2vh .2vh #000}
+            img {margin:2.5vh 0 0; height:25vh; /*box-shadow: 0 0 .5vh #000*/}
+            div {margin:2.5vh 0; padding:0; font-size:2.5vh}
+            span {font-size:5vh}
+        </style>
+    </head>
+    <body>
+        <img src="favicon.png"/>
+        <div id="console">Searching...</div>
+        <div>LIGHT COLOR (UNCALIBRATED)<br/><span id="col">-</span></div>
+        <div>LIGHT LUX<br/><span id="lux">-</span></div>
+        <div>SOLAR VOLTAGE<br/><span id="sol">-</span></div>
+        <div>PRIMARY VOLTAGE<br/><span id="bat">-</span></div>
+        <div>SECONDARY VOLTAGE<br/><span id="sec">-</span></div>
+        <script src="../JS/cordova.js"></script>
+        <script>
+            var app = {
+                initialize: _ => {
+                    document.addEventListener('deviceready', app.onReady, false)
+                    document.addEventListener('resume', app.onReady, false)
+                    document.addEventListener('pause', unload = app.onPause, false)
+                },
+                onReady: _ => {
+                    ble.isEnabled(app.onEnable, _ => { print('console', 'Bluetooth is disabled!') })
+                },
+                onEnable: _ => {
+                    ble.startScan([], app.onDiscover, app.onReady)
+                },
+                onDiscover: device => {
+                    var data = new Uint8Array(device.advertising.kCBAdvDataManufacturerData)
+                    if (device.name === 'Permamote' && data && data.length >= 19) {
+                        var lite = (1 << data[3]) * data[4] * 0.045
+                        var colr = '#' + hex(data[6]) + hex(data[8]) + hex(data[10])
+                        var vbat = 0.6*6*(data[12]*256 + data[11]) / ((1 << 10) - 1)
+                        var vsol = 0.6*6*(data[14]*256 + data[13]) / ((1 << 10) - 1)
+                        var vsec = 0.6*6*(data[16]*256 + data[15]) / ((1 << 10) - 1)
+                        print('lux', lite.toFixed(2) + ' lx')
+                        print('bat', vbat.toFixed(2) + ' V')
+                        print('sol', vsol.toFixed(2) + ' V')
+                        print('sec', vsec.toFixed(2) + ' V')
+                        print('col', '<span style="background:' + colr + '">&nbsp;' + colr + '&nbsp;</span>')
+                        print('console', 'Updated at ' + (new Date()).toLocaleTimeString())
+                        ble.stopScan(app.onEnable, app.onReady)
+                    }
+                },
+                onPause: _ => {
+                    ble.stopScan()
+                }
+            }
+            var hex = d => (0 + d.toString(16)).substr(-2)
+            var print = (i,s) => document.getElementById(i).innerHTML = s
+            if (navigator.userAgent.endsWith('ARBrowser')) app.initialize()
+            else location = 'https://itunes.apple.com/us/app/ar-browser-lab11/id1453746316'
+        </script>
+    </body>
+</html>
