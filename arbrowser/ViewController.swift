@@ -76,6 +76,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
         
         // Setup AR session
         let configuration = ARWorldTrackingConfiguration()
+        if let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "Devices", bundle: nil) {
+            configuration.detectionImages = referenceImages
+        }
         sceneView.session.run(configuration, options: [ARSession.RunOptions.resetTracking, ARSession.RunOptions.removeExistingAnchors])
     }
     
@@ -114,7 +117,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         // Create and configure nodes for anchors added to the view's session.
-        guard let s = anchor.name, self.sceneView.scene.rootNode.childNode(withName: s, recursively: true) == nil else { return nil }
+        guard let s = (anchor as? ARImageAnchor)?.referenceImage.name?.replace(" ", with: "/") ?? anchor.name, self.sceneView.scene.rootNode.childNode(withName: s, recursively: true) == nil else { return nil }
         let node = SCNNode(geometry: SCNBox(width: 0.025, height: 0.025, length: 0.025, chamferRadius: 0))
         node.transform = SCNMatrix4(anchor.transform)
         node.geometry!.firstMaterial?.isDoubleSided = true
