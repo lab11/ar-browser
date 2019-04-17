@@ -2,12 +2,13 @@
 <html>
     <body>
         <style>
-            body { background:#3338 }
+            div { background:radial-gradient(#0008,#0000 50vw); margin:-50vw; height:100vw; width:100vw; position:fixed; left:50%; top:50% }
             img { height:20vh; margin:-10vh; position:fixed; left:50%; top:50%;}
             img { animation:spin; animation-duration:5s; animation-timing-function:ease-in-out; animation-iteration-count:infinite; }
             @keyframes spin { 0% { transform:rotate(0deg) scale(1) } 50% { transform:rotate(360deg) scale(.5) } 100% { transform:rotate(720deg) scale(1) } }
             #in { animation-direction:reverse }
         </style>
+        <div></div>
         <img src="img/inner.svg" id="in"/>
         <img src="img/outer.svg"/>
     </body>
