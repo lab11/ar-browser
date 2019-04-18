@@ -56,6 +56,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             scrollGradient.frame = wv.bounds
             scrollGradient.colors = [UIColor.black.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
             scrollGradient.locations = [0, 0.02, 0.98, 1]
+            wv.configuration.userContentController.addUserScript(makeJS())
             wv.layer.mask = scrollGradient
             wv.scrollView.backgroundColor = .clear
             wv.scrollView.delegate = self
@@ -110,6 +111,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             }
         }
         DispatchQueue.main.async { self.processing = nil }
+    }
+    
+    func makeJS() -> WKUserScript {
+        var js = "";
+        let path = "www/cordova.js"
+        if let jsFilePath = Bundle.main.path(forResource:path, ofType:nil) {
+            let jsURL = URL.init(fileURLWithPath: jsFilePath)
+            try? js.append(contentsOf:String(contentsOfFile: jsURL.path, encoding: String.Encoding.utf8))
+        }
+        return WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true)
     }
     
     
