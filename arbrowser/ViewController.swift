@@ -115,8 +115,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
     
     func makeJS() -> WKUserScript {
         var js = "";
-        let path = "www/cordova.js"
-        if let jsFilePath = Bundle.main.path(forResource:path, ofType:nil) {
+        var paths = ["www/cordova.js","www/cordova_plugins.js"] // Array of JS paths, starting with Cordova & plugin registry
+        let enumerator = FileManager.default.enumerator(atPath: Bundle.main.path(forResource:"www/plugins", ofType:nil) ?? "")
+        while let path = enumerator?.nextObject() as? String {
+            if path.hasSuffix(".js") { // Plugin files
+                paths.append("www/plugins/" + path)
+            }
+        }
+        for path in paths {
+            guard let jsFilePath = Bundle.main.path(forResource:path, ofType:nil) else { continue }
             let jsURL = URL.init(fileURLWithPath: jsFilePath)
             try? js.append(contentsOf:String(contentsOfFile: jsURL.path, encoding: String.Encoding.utf8))
         }
