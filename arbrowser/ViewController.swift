@@ -12,7 +12,7 @@ import Vision
 import WebKit
 import SceneKit
 
-class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UIScrollViewDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, WKNavigationDelegate, UIScrollViewDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet var container: UIView!
@@ -60,6 +60,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, UI
             wv.layer.mask = scrollGradient
             wv.scrollView.backgroundColor = .clear
             wv.scrollView.delegate = self
+            wv.navigationDelegate = self
             wv.isOpaque = false
             wv.alpha = 0.9
             homeUrl = wv.url
