@@ -24,6 +24,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, WK
     @IBOutlet var navIcon: UIImageView!
     
     var qrRequests = [VNRequest]()
+    var requestablePlugins = ["BLECentralPlugin","ChromeSocketsUdp"]
     var gradient = CAGradientLayer(), scrollGradient = CAGradientLayer()
     var hitNode = SCNNode()
     var cdvController: CDVViewController?
@@ -247,7 +248,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, WK
         })
         for child in navBar.subviews { child.alpha = 0 }
         DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-            self.webView.evaluateJavaScript("ble.stopScan();")
+            if let plugins = self.cdvController?.pluginObjects {
+                for pluginId in self.requestablePlugins {
+                    if let plugin = plugins.object(forKey: pluginId) as? CDVPlugin {
+                        plugin.pluginInitialize()
+                        plugin.commandDelegate = nil
+                    }
+                }
+            }
             self.webView.loadFileURL(self.homeUrl!, allowingReadAccessTo: self.homeUrl!.deletingPathExtension())
         }
         isOpen = false
@@ -277,6 +285,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, WK
                 hitNode = result.node
                 hitNode.opacity = 0.6
                 if let s = hitNode.name, let url = URL(string: s) {
+                    if let plugins = self.cdvController?.pluginObjects {
+                        for pluginId in self.requestablePlugins {
+                            if let plugin = plugins.object(forKey: pluginId) as? CDVPlugin {
+                                plugin.commandDelegate = cdvController?.commandDelegate
+                            }
+                        }
+                    }
                     webView.backForwardList.perform(Selector(("_removeAllItems")))
                     webView.load(URLRequest(url: url))
                     navTitle.textColor = .white
