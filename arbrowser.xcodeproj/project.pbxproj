@@ -10,6 +10,11 @@
 		E9575B9E2224512D00618F10 /* www in Resources */ = {isa = PBXBuildFile; fileRef = E9575B9D2224512C00618F10 /* www */; };
 		E9575BBC22245BC400618F10 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BB822245B1B00618F10 /* CoreBluetooth.framework */; };
 		E9575BBE22245C8900618F10 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9575BBD22245C8800618F10 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E963178222DFE6EF00AC237A /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E963177A22DFE6EF00AC237A /* CameraViewController.m */; };
+		E963178322DFE6EF00AC237A /* CDVMediaStream.m in Sources */ = {isa = PBXBuildFile; fileRef = E963177B22DFE6EF00AC237A /* CDVMediaStream.m */; };
+		E963178422DFE6EF00AC237A /* UIImage+DrawBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = E963177E22DFE6EF00AC237A /* UIImage+DrawBlock.m */; };
+		E963178522DFE6EF00AC237A /* JPSCameraButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E963178022DFE6EF00AC237A /* JPSCameraButton.m */; };
+		E963178922DFEE3300AC237A /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E963178822DFEE3300AC237A /* CameraViewController.xib */; };
 		E97AEBD12241B1F200E6C99E /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E97AEBC92241AFEB00E6C99E /* libCordova.a */; };
 		E97AEBDB2241B48A00E6C99E /* SwiftLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD32241B48A00E6C99E /* SwiftLinkPreview.swift */; };
 		E97AEBDC2241B48A00E6C99E /* NSURLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97AEBD42241B48A00E6C99E /* NSURLSessionExtension.swift */; };
@@ -82,6 +87,15 @@
 		E9575B9D2224512C00618F10 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		E9575BB822245B1B00618F10 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		E9575BBD22245C8800618F10 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E963177922DFE6EF00AC237A /* UIImage+DrawBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DrawBlock.h"; sourceTree = "<group>"; };
+		E963177A22DFE6EF00AC237A /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		E963177B22DFE6EF00AC237A /* CDVMediaStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDVMediaStream.m; sourceTree = "<group>"; };
+		E963177C22DFE6EF00AC237A /* JPSCameraButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPSCameraButton.h; sourceTree = "<group>"; };
+		E963177D22DFE6EF00AC237A /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		E963177E22DFE6EF00AC237A /* UIImage+DrawBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DrawBlock.m"; sourceTree = "<group>"; };
+		E963177F22DFE6EF00AC237A /* CDVMediaStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDVMediaStream.h; sourceTree = "<group>"; };
+		E963178022DFE6EF00AC237A /* JPSCameraButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPSCameraButton.m; sourceTree = "<group>"; };
+		E963178822DFEE3300AC237A /* CameraViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
 		E97AEBC22241AFEB00E6C99E /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		E97AEBD32241B48A00E6C99E /* SwiftLinkPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreview.swift; sourceTree = "<group>"; };
 		E97AEBD42241B48A00E6C99E /* NSURLSessionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLSessionExtension.swift; sourceTree = "<group>"; };
@@ -149,6 +163,29 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E963177822DFE6EF00AC237A /* phonegap-plugin-media-stream */ = {
+			isa = PBXGroup;
+			children = (
+				E963177922DFE6EF00AC237A /* UIImage+DrawBlock.h */,
+				E963177A22DFE6EF00AC237A /* CameraViewController.m */,
+				E963177B22DFE6EF00AC237A /* CDVMediaStream.m */,
+				E963177C22DFE6EF00AC237A /* JPSCameraButton.h */,
+				E963177D22DFE6EF00AC237A /* CameraViewController.h */,
+				E963177E22DFE6EF00AC237A /* UIImage+DrawBlock.m */,
+				E963177F22DFE6EF00AC237A /* CDVMediaStream.h */,
+				E963178022DFE6EF00AC237A /* JPSCameraButton.m */,
+			);
+			path = "phonegap-plugin-media-stream";
+			sourceTree = "<group>";
+		};
+		E963178722DFEE3300AC237A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E963178822DFEE3300AC237A /* CameraViewController.xib */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		E97AEBC32241AFEB00E6C99E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				E99062C2221B551E00F0063F /* AppDelegate.swift */,
+				E963178722DFEE3300AC237A /* Resources */,
 				E99062C6221B551E00F0063F /* ViewController.swift */,
 				E99062C8221B551E00F0063F /* Main.storyboard */,
 				E99062CD221B551F00F0063F /* LaunchScreen.storyboard */,
@@ -211,6 +249,7 @@
 		E9FCCC67223082980074EC5F /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				E963177822DFE6EF00AC237A /* phonegap-plugin-media-stream */,
 				E97AEBD22241B48A00E6C99E /* SwiftLinkPreview */,
 				E9FCCC68223082980074EC5F /* cordova-plugin-ble-central */,
 				E9FCCC70223082980074EC5F /* README */,
@@ -358,6 +397,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E963178922DFEE3300AC237A /* CameraViewController.xib in Resources */,
 				E9FCCC82223082980074EC5F /* README in Resources */,
 				E99062CF221B551F00F0063F /* LaunchScreen.storyboard in Resources */,
 				E99062CC221B551F00F0063F /* Assets.xcassets in Resources */,
@@ -378,7 +418,10 @@
 				E97AEBDF2241B48A00E6C99E /* Regex.swift in Sources */,
 				E99062C7221B551E00F0063F /* ViewController.swift in Sources */,
 				E97AEBDB2241B48A00E6C99E /* SwiftLinkPreview.swift in Sources */,
+				E963178322DFE6EF00AC237A /* CDVMediaStream.m in Sources */,
+				E963178422DFE6EF00AC237A /* UIImage+DrawBlock.m in Sources */,
 				E97AEBE02241B48A00E6C99E /* Cache.swift in Sources */,
+				E963178222DFE6EF00AC237A /* CameraViewController.m in Sources */,
 				E9FCCC80223082980074EC5F /* BLECommandContext.m in Sources */,
 				E97AEBDE2241B48A00E6C99E /* Response.swift in Sources */,
 				E9FCCC86223082980074EC5F /* CDVWKWebViewEngine.m in Sources */,
@@ -390,6 +433,7 @@
 				E99062C3221B551E00F0063F /* AppDelegate.swift in Sources */,
 				E9FCCC83223082980074EC5F /* GCDAsyncUdpSocket.m in Sources */,
 				E97AEBE12241B48A00E6C99E /* StringExtension.swift in Sources */,
+				E963178522DFE6EF00AC237A /* JPSCameraButton.m in Sources */,
 				E9FCCC84223082980074EC5F /* GCDAsyncSocket.m in Sources */,
 				E97AEBDD2241B48A00E6C99E /* ResponseExtension.swift in Sources */,
 				E9FCCC7F223082980074EC5F /* CBPeripheral+Extensions.m in Sources */,
