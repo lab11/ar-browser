@@ -129,6 +129,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, WK
             let jsURL = URL.init(fileURLWithPath: jsFilePath)
             try? js.append(contentsOf:String(contentsOfFile: jsURL.path, encoding: String.Encoding.utf8))
         }
+        js += "setTimeout(_=>navigator.getUserMedia = navigator.mediaDevices.getUserMedia,10);"
         return WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true)
     }
     
