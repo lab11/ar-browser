@@ -117,7 +117,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, WK
     
     func makeJS() -> WKUserScript {
         var js = "";
-        var paths = ["www/cordova.js","www/cordova_plugins.js","www/webxr-polyfill.js"] // Array of JS paths, starting with Cordova & plugin registry
+        var paths = ["www/cordova.js","www/cordova_plugins.js","www/webxr.js"] // Array of JS paths, starting with Cordova & plugin registry
         let enumerator = FileManager.default.enumerator(atPath: Bundle.main.path(forResource:"www/plugins", ofType:nil) ?? "")
         while let path = enumerator?.nextObject() as? String {
             if path.hasSuffix(".js") { // Plugin files
